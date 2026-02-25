@@ -5,6 +5,8 @@ CREATE TABLE MOTORISTA (
     id_motorista INT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     cpf VARCHAR(11) UNIQUE NOT NULL,
+    cnh VARCHAR(11) UNIQUE NOT NULL,
+    data_nascimento DATE NOT NULL,
     telefone VARCHAR(15),
     chave_pix VARCHAR(100),
     email VARCHAR(100)
@@ -58,9 +60,11 @@ CREATE TABLE PRECOS_TRECHOS (
 CREATE TABLE CLIENTE (
     id_cliente INT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
+    data_nascimento DATE NOT NULL,
     cpf VARCHAR(11) UNIQUE NOT NULL,
     telefone VARCHAR(15),
     email VARCHAR(100)
+    
 );
 
 CREATE TABLE RESERVA (
