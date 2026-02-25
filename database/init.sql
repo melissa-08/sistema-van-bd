@@ -91,3 +91,13 @@ CREATE TABLE AVALIACAO (
     FOREIGN KEY (id_motorista) REFERENCES MOTORISTA(id_motorista),
     FOREIGN KEY (id_cliente) REFERENCES CLIENTE(id_cliente)
 );
+
+CREATE TABLE ADMIN (
+    id_admin INT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    data_nascimento DATE NOT NULL,
+    cpf VARCHAR(11) UNIQUE NOT NULL,
+    telefone VARCHAR(15),
+    email VARCHAR(100) UNIQUE NOT NULL,
+    senha VARCHAR(255) NOT NULL,
+);

@@ -1,4 +1,3 @@
-INSERT INTO MOTORISTA (id_motorista, nome, cpf,cnh, data_nascimento, chave_pix, email) VALUES
 INSERT INTO MOTORISTA (id_motorista, nome, cpf, cnh, data_nascimento, chave_pix, email) VALUES
 (1, 'João Batista da Silva', '05433215080', '11122233344', '1980-05-12', '05433215080', 'joao.silva@email.com'),
 (2, 'Maria Aparecida Souza', '82845610050', '22233344455', '1985-08-22', 'maria.souza@email.com', 'maria.souza@email.com'),
@@ -56,7 +55,7 @@ INSERT INTO VEICULO (placa, modelo, qtd_assentos, id_motorista) VALUES
 ('DEF4G56', 'Renault Master', 16, 2),
 ('GHI7J89', 'Fiat Ducato', 17, 3),
 ('JKL0M12', 'Volkswagen Crafter', 16, 4),
-('NOP3Q45', 'Iveco Daily', 15, 5);
+('NOP3Q45', 'Iveco Daily', 15, 5),
 ('PQR6S78', 'Mercedes Sprinter', 15, 6),
 ('TUV9W01', 'Renault Master', 16, 7),
 ('WXY2Z34', 'Fiat Ducato', 17, 8),
@@ -79,7 +78,7 @@ INSERT INTO VEICULO (placa, modelo, qtd_assentos, id_motorista) VALUES
 ('STU3V45', 'Iveco Daily', 15, 25),
 ('VWX6Y78', 'Mercedes Sprinter', 15, 26),
 ('YZA9B01', 'Renault Master', 16, 27),
-('BC D2C34', 'Fiat Ducato', 17, 28),
+('BCD2C34', 'Fiat Ducato', 17, 28),
 ('CDE5F67', 'Volkswagen Crafter', 16, 29),
 ('EFG8H90', 'Iveco Daily', 15, 30),
 ('GHI1J23', 'Mercedes Sprinter', 15, 31),
@@ -109,7 +108,7 @@ INSERT INTO ROTA (id_rota, nome) VALUES
 (3, 'Garanhuns - Belo Jardim'),
 (4, 'Belo Jardim - Garanhuns'),
 (5, 'Garanhuns - Caetés'),
-(6, 'Caetés - Garanhuns');
+(6, 'Caetés - Garanhuns'),
 (7, 'Garanhuns - Recife'),
 (8, 'Recife - Garanhuns'),
 (9, 'Garanhuns - Maceió'),
@@ -160,49 +159,221 @@ INSERT INTO PONTO (id_ponto, cidade, local_parada, ordem_na_rota, id_rota) VALUE
 (1, 'Garanhuns', 'Rodoviária', 1, 1),
 (2, 'São Caetano', 'Posto BR', 2, 1),
 (3, 'Caruaru', 'Rodoviária', 3, 1),
-
 -- ROTA 2: Caruaru → Garanhuns
 (4, 'Caruaru', 'Rodoviária', 1, 2),
 (5, 'São Caetano', 'Posto BR', 2, 2),
 (6, 'Garanhuns', 'Rodoviária', 3, 2),
-
 -- ROTA 3: Garanhuns → Belo Jardim
 (7, 'Garanhuns', 'Rodoviária', 1, 3),
 (8, 'Lajedo', 'Praça da Prefeitura', 2, 3),
 (9, 'Belo Jardim', 'Centro', 3, 3),
-
 -- ROTA 4: Belo Jardim → Garanhuns
 (10, 'Belo Jardim', 'Centro', 1, 4),
 (11, 'Lajedo', 'Praça da Prefeitura', 2, 4),
 (12, 'Garanhuns', 'Rodoviária', 3, 4),
-
 -- ROTA 5: Garanhuns → Caetés
 (13, 'Garanhuns', 'Rodoviária', 1, 5),
 (14, 'Caetés', 'Praça Central', 2, 5),
-
 -- ROTA 6: Caetés → Garanhuns
 (15, 'Caetés', 'Praça Central', 1, 6),
-(16, 'Garanhuns', 'Rodoviária', 2, 6);
+(16, 'Garanhuns', 'Rodoviária', 2, 6),
+-- ROTA 7: Garanhuns → Recife
+(17, 'Garanhuns', 'Rodoviária', 1, 7),
+(18, 'Caruaru', 'Rodoviária', 2, 7),
+(19, 'Recife', 'TIP', 3, 7),
+-- ROTA 8: Recife → Garanhuns
+(20, 'Recife', 'TIP', 1, 8),
+(21, 'Caruaru', 'Rodoviária', 2, 8),
+(22, 'Garanhuns', 'Rodoviária', 3, 8),
+-- ROTA 9: Garanhuns → Maceió
+(23, 'Garanhuns', 'Rodoviária', 1, 9),
+(24, 'Palmeira dos Índios', 'Centro', 2, 9),
+(25, 'Maceió', 'Rodoviária', 3, 9),
+-- ROTA 10: Maceió → Garanhuns
+(26, 'Maceió', 'Rodoviária', 1, 10),
+(27, 'Palmeira dos Índios', 'Centro', 2, 10),
+(28, 'Garanhuns', 'Rodoviária', 3, 10),
+-- ROTA 11: Caruaru → Recife
+(29, 'Caruaru', 'Rodoviária', 1, 11),
+(30, 'Gravatá', 'Centro', 2, 11),
+(31, 'Recife', 'TIP', 3, 11),
+-- ROTA 12: Recife → Caruaru
+(32, 'Recife', 'TIP', 1, 12),
+(33, 'Gravatá', 'Centro', 2, 12),
+(34, 'Caruaru', 'Rodoviária', 3, 12),
+-- ROTA 13: Garanhuns → Palmeirina
+(35, 'Garanhuns', 'Rodoviária', 1, 13),
+(36, 'Palmeirina', 'Centro', 2, 13),
+-- ROTA 14: Palmeirina → Garanhuns
+(37, 'Palmeirina', 'Centro', 1, 14),
+(38, 'Garanhuns', 'Rodoviária', 2, 14),
+-- ROTA 15: Garanhuns → Angelim
+(39, 'Garanhuns', 'Rodoviária', 1, 15),
+(40, 'Angelim', 'Centro', 2, 15),
+-- ROTA 16: Angelim → Garanhuns
+(41, 'Angelim', 'Centro', 1, 16),
+(42, 'Garanhuns', 'Rodoviária', 2, 16),
+-- ROTA 17: Garanhuns → São João
+(43, 'Garanhuns', 'Rodoviária', 1, 17),
+(44, 'São João', 'Centro', 2, 17),
+-- ROTA 18: São João → Garanhuns
+(45, 'São João', 'Centro', 1, 18),
+(46, 'Garanhuns', 'Rodoviária', 2, 18),
+-- ROTA 19: Garanhuns → Bom Conselho
+(47, 'Garanhuns', 'Rodoviária', 1, 19),
+(48, 'Bom Conselho', 'Centro', 2, 19),
+-- ROTA 20: Bom Conselho → Garanhuns
+(49, 'Bom Conselho', 'Centro', 1, 20),
+(50, 'Garanhuns', 'Rodoviária', 2, 20),
+-- ROTA 21: Garanhuns → Brejão
+(51, 'Garanhuns', 'Rodoviária', 1, 21),
+(52, 'Brejão', 'Centro', 2, 21),
+-- ROTA 22: Brejão → Garanhuns
+(53, 'Brejão', 'Centro', 1, 22),
+(54, 'Garanhuns', 'Rodoviária', 2, 22),
+-- ROTA 23: Garanhuns → Correntes
+(55, 'Garanhuns', 'Rodoviária', 1, 23),
+(56, 'Correntes', 'Centro', 2, 23),
+-- ROTA 24: Correntes → Garanhuns
+(57, 'Correntes', 'Centro', 1, 24),
+(58, 'Garanhuns', 'Rodoviária', 2, 24),
+-- ROTA 25: Garanhuns → Lagoa do Ouro
+(59, 'Garanhuns', 'Rodoviária', 1, 25),
+(60, 'Lagoa do Ouro', 'Praça Central', 2, 25),
+-- ROTA 26: Lagoa do Ouro → Garanhuns
+(61, 'Lagoa do Ouro', 'Praça Central', 1, 26),
+(62, 'Garanhuns', 'Rodoviária', 2, 26),
+-- ROTA 27: Garanhuns → Paranatama
+(63, 'Garanhuns', 'Rodoviária', 1, 27),
+(64, 'Paranatama', 'Centro', 2, 27),
+-- ROTA 28: Paranatama → Garanhuns
+(65, 'Paranatama', 'Centro', 1, 28),
+(66, 'Garanhuns', 'Rodoviária', 2, 28),
+-- ROTA 29: Garanhuns → Saloá
+(67, 'Garanhuns', 'Rodoviária', 1, 29),
+(68, 'Saloá', 'Centro', 2, 29),
+-- ROTA 30: Saloá → Garanhuns
+(69, 'Saloá', 'Centro', 1, 30),
+(70, 'Garanhuns', 'Rodoviária', 2, 30),
+-- ROTA 31: Garanhuns → Iati
+(71, 'Garanhuns', 'Rodoviária', 1, 31),
+(72, 'Iati', 'Centro', 2, 31),
+-- ROTA 32: Iati → Garanhuns
+(73, 'Iati', 'Centro', 1, 32),
+(74, 'Garanhuns', 'Rodoviária', 2, 32),
+-- ROTA 33: Garanhuns → Águas Belas
+(75, 'Garanhuns', 'Rodoviária', 1, 33),
+(76, 'Águas Belas', 'Rodoviária', 2, 33),
+-- ROTA 34: Águas Belas → Garanhuns
+(77, 'Águas Belas', 'Rodoviária', 1, 34),
+(78, 'Garanhuns', 'Rodoviária', 2, 34),
+-- ROTA 35: Garanhuns → Jupi
+(79, 'Garanhuns', 'Rodoviária', 1, 35),
+(80, 'Jupi', 'Centro', 2, 35),
+-- ROTA 36: Jupi → Garanhuns
+(81, 'Jupi', 'Centro', 1, 36),
+(82, 'Garanhuns', 'Rodoviária', 2, 36),
+-- ROTA 37: Garanhuns → Jurema
+(83, 'Garanhuns', 'Rodoviária', 1, 37),
+(84, 'Jurema', 'Centro', 2, 37),
+-- ROTA 38: Jurema → Garanhuns
+(85, 'Jurema', 'Centro', 1, 38),
+(86, 'Garanhuns', 'Rodoviária', 2, 38),
+-- ROTA 39: Garanhuns → Canhotinho
+(87, 'Garanhuns', 'Rodoviária', 1, 39),
+(88, 'Canhotinho', 'Centro', 2, 39),
+-- ROTA 40: Canhotinho → Garanhuns
+(89, 'Canhotinho', 'Centro', 1, 40),
+(90, 'Garanhuns', 'Rodoviária', 2, 40),
+-- ROTA 41: Garanhuns → Capoeiras
+(91, 'Garanhuns', 'Rodoviária', 1, 41),
+(92, 'Capoeiras', 'Centro', 2, 41),
+-- ROTA 42: Capoeiras → Garanhuns
+(93, 'Capoeiras', 'Centro', 1, 42),
+(94, 'Garanhuns', 'Rodoviária', 2, 42),
+-- ROTA 43: Garanhuns → Pesqueira
+(95, 'Garanhuns', 'Rodoviária', 1, 43),
+(96, 'Lajedo', 'Praça da Prefeitura', 2, 43),
+(97, 'Pesqueira', 'Centro', 3, 43),
+-- ROTA 44: Pesqueira → Garanhuns
+(98, 'Pesqueira', 'Centro', 1, 44),
+(99, 'Lajedo', 'Praça da Prefeitura', 2, 44),
+(100, 'Garanhuns', 'Rodoviária', 3, 44),
+-- ROTA 45: Garanhuns → Arcoverde
+(101, 'Garanhuns', 'Rodoviária', 1, 45),
+(102, 'Pesqueira', 'Centro', 2, 45),
+(103, 'Arcoverde', 'Rodoviária', 3, 45),
+-- ROTA 46: Arcoverde → Garanhuns
+(104, 'Arcoverde', 'Rodoviária', 1, 46),
+(105, 'Pesqueira', 'Centro', 2, 46),
+(106, 'Garanhuns', 'Rodoviária', 3, 46),
+-- ROTA 47: Garanhuns → Petrolina
+(107, 'Garanhuns', 'Rodoviária', 1, 47),
+(108, 'Arcoverde', 'Rodoviária', 2, 47),
+(109, 'Petrolina', 'Rodoviária', 3, 47),
+-- ROTA 48: Petrolina → Garanhuns
+(110, 'Petrolina', 'Rodoviária', 1, 48),
+(111, 'Arcoverde', 'Rodoviária', 2, 48),
+(112, 'Garanhuns', 'Rodoviária', 3, 48),
+-- ROTA 49: Caruaru → Bezerros
+(113, 'Caruaru', 'Rodoviária', 1, 49),
+(114, 'Bezerros', 'Centro', 2, 49),
+-- ROTA 50: Bezerros → Caruaru
+(115, 'Bezerros', 'Centro', 1, 50),
+(116, 'Caruaru', 'Rodoviária', 2, 50);
 
 
 INSERT INTO VIAGEM (id_viagem, horario_saida, status, placa, id_motorista, id_rota) VALUES
--- Garanhuns → Caruaru
 (1, '2026-02-05 06:30:00', 'CONCLUIDA', 'ABC1D23', 1, 1),
-
--- Caruaru → Garanhuns
 (2, '2026-02-05 13:30:00', 'CONCLUIDA', 'ABC1D23', 1, 2),
-
--- Garanhuns → Belo Jardim
-(3, '2026-02-15 07:00:00', 'DISPONIVEL', 'DEF4G56', 2, 3),
-
--- Belo Jardim → Garanhuns
-(4, '2026-02-15 12:00:00', 'DISPONIVEL', 'DEF4G56', 2, 4),
-
--- Garanhuns → Caetés
-(5, '2026-02-16 08:00:00', 'DISPONIVEL', 'GHI7J89', 3, 5),
-
--- Caetés → Garanhuns
-(6, '2026-02-16 11:30:00', 'DISPONIVEL', 'GHI7J89', 3, 6);
+(3, '2026-02-15 07:00:00', 'CONCLUIDA', 'DEF4G56', 2, 3),
+(4, '2026-02-15 12:00:00', 'CONCLUIDA', 'DEF4G56', 2, 4),
+(5, '2026-02-16 08:00:00', 'CONCLUIDA', 'GHI7J89', 3, 5),
+(6, '2026-02-16 11:30:00', 'CONCLUIDA', 'GHI7J89', 3, 6),
+(7,  '2026-03-07 06:00:00', 'DISPONIVEL', 'JKL0M12', 4, 7),
+(8,  '2026-03-07 14:00:00', 'DISPONIVEL', 'JKL0M12', 4, 8),
+(9,  '2026-03-07 07:00:00', 'DISPONIVEL', 'NOP3Q45', 5, 9),
+(10, '2026-03-07 13:30:00', 'DISPONIVEL', 'NOP3Q45', 5, 10),
+(11, '2026-03-07 06:30:00', 'DISPONIVEL', 'PQR6S78', 6, 11),
+(12, '2026-03-07 15:00:00', 'DISPONIVEL', 'PQR6S78', 6, 12),
+(13, '2026-03-07 07:00:00', 'DISPONIVEL', 'TUV9W01', 7, 13),
+(14, '2026-03-07 12:00:00', 'DISPONIVEL', 'TUV9W01', 7, 14),
+(15, '2026-03-07 08:00:00', 'DISPONIVEL', 'WXY2Z34', 8, 15),
+(16, '2026-03-07 11:00:00', 'DISPONIVEL', 'WXY2Z34', 8, 16),
+(17, '2026-03-07 06:00:00', 'DISPONIVEL', 'ZAB5C67', 9, 17),
+(18, '2026-03-07 14:00:00', 'DISPONIVEL', 'ZAB5C67', 9, 18),
+(19, '2026-03-07 07:00:00', 'DISPONIVEL', 'CDE8F90', 10, 19),
+(20, '2026-03-07 12:00:00', 'DISPONIVEL', 'CDE8F90', 10, 20),
+(21, '2026-03-08 06:30:00', 'DISPONIVEL', 'FGH1I23', 11, 21),
+(22, '2026-03-08 13:30:00', 'DISPONIVEL', 'FGH1I23', 11, 22),
+(23, '2026-03-09 07:00:00', 'DISPONIVEL', 'IJK4L56', 12, 23),
+(24, '2026-03-09 15:00:00', 'DISPONIVEL', 'IJK4L56', 12, 24),
+(25, '2026-03-10 06:00:00', 'DISPONIVEL', 'LMN7O89', 13, 25),
+(26, '2026-03-10 12:30:00', 'DISPONIVEL', 'LMN7O89', 13, 26),
+(27, '2026-03-11 07:30:00', 'DISPONIVEL', 'OPQ0R12', 14, 27),
+(28, '2026-03-11 14:30:00', 'DISPONIVEL', 'OPQ0R12', 14, 28),
+(29, '2026-03-12 06:00:00', 'DISPONIVEL', 'RST3U45', 15, 29),
+(30, '2026-03-12 13:00:00', 'DISPONIVEL', 'RST3U45', 15, 30),
+(31, '2026-03-13 07:00:00', 'DISPONIVEL', 'UVW6X78', 16, 31),
+(32, '2026-03-13 12:00:00', 'DISPONIVEL', 'UVW6X78', 16, 32),
+(33, '2026-03-14 06:00:00', 'DISPONIVEL', 'XYZ9A01', 17, 33),
+(34, '2026-03-14 14:00:00', 'DISPONIVEL', 'XYZ9A01', 17, 34),
+(35, '2026-03-15 07:00:00', 'DISPONIVEL', 'ABC2B34', 18, 35),
+(36, '2026-03-15 12:30:00', 'DISPONIVEL', 'ABC2B34', 18, 36),
+(37, '2026-03-16 06:30:00', 'DISPONIVEL', 'BCD5E67', 19, 37),
+(38, '2026-03-16 13:30:00', 'DISPONIVEL', 'BCD5E67', 19, 38),
+(39, '2026-03-17 07:00:00', 'DISPONIVEL', 'DEF8G90', 20, 39),
+(40, '2026-03-17 12:00:00', 'DISPONIVEL', 'DEF8G90', 20, 40),
+(41, '2026-03-18 06:00:00', 'DISPONIVEL', 'GHI1H23', 21, 41),
+(42, '2026-03-18 14:00:00', 'DISPONIVEL', 'GHI1H23', 21, 42),
+(43, '2026-03-19 07:00:00', 'DISPONIVEL', 'JKL4M56', 22, 43),
+(44, '2026-03-19 15:00:00', 'DISPONIVEL', 'JKL4M56', 22, 44),
+(45, '2026-03-20 06:00:00', 'DISPONIVEL', 'MNO7P89', 23, 45),
+(46, '2026-03-20 13:00:00', 'DISPONIVEL', 'MNO7P89', 23, 46),
+(47, '2026-03-21 07:00:00', 'DISPONIVEL', 'PQR0S12', 24, 47),
+(48, '2026-03-21 12:00:00', 'DISPONIVEL', 'PQR0S12', 24, 48),
+(49, '2026-03-22 08:00:00', 'DISPONIVEL', 'STU3V45', 25, 49),
+(50, '2026-03-22 11:30:00', 'DISPONIVEL', 'STU3V45', 25, 50);
 
 
 INSERT INTO PRECOS_TRECHOS (id_viagem, id_ponto_subida, id_ponto_descida, valor_trecho) VALUES
@@ -211,33 +382,95 @@ INSERT INTO PRECOS_TRECHOS (id_viagem, id_ponto_subida, id_ponto_descida, valor_
 (1, 1, 2, 25.00),  -- Garanhuns -> São Caetano
 (1, 2, 3, 20.00),  -- São Caetano -> Caruaru
 (1, 1, 3, 45.00),  -- Garanhuns -> Caruaru
-
 -- VIAGEM 2: Caruaru → Garanhuns (Rota 2)
 -- Pontos: 4 -> 5 -> 6
 (2, 4, 5, 20.00),  -- Caruaru -> São Caetano
 (2, 5, 6, 25.00),  -- São Caetano -> Garanhuns
 (2, 4, 6, 45.00),  -- Caruaru -> Garanhuns
-
 -- VIAGEM 3: Garanhuns → Belo Jardim (Rota 3)
 -- Pontos: 7 -> 8 -> 9
 (3, 7, 8, 15.00),  -- Garanhuns -> Lajedo
 (3, 8, 9, 15.00),  -- Lajedo -> Belo Jardim
 (3, 7, 9, 30.00),  -- Garanhuns -> Belo Jardim
-
 -- VIAGEM 4: Belo Jardim → Garanhuns (Rota 4)
 -- Pontos: 10 -> 11 -> 12
 (4, 10, 11, 15.00), -- Belo Jardim -> Lajedo
 (4, 11, 12, 15.00), -- Lajedo -> Garanhuns
 (4, 10, 12, 30.00), -- Belo Jardim -> Garanhuns
-
 -- VIAGEM 5: Garanhuns → Caetés (Rota 5)
 -- Pontos: 13 -> 14
 (5, 13, 14, 10.00), -- Garanhuns -> Caetés
-
 -- VIAGEM 6: Caetés → Garanhuns (Rota 6)
 -- Pontos: 15 -> 16
-(6, 15, 16, 10.00); -- Caetés -> Garanhuns
-
+(6, 15, 16, 10.00), -- Caetés -> Garanhuns
+(7, 17, 18, 35.00),
+(7, 18, 19, 40.00),
+(7, 17, 19, 75.00),
+(8, 20, 21, 40.00),
+(8, 21, 22, 35.00),
+(8, 20, 22, 75.00),
+(9, 23, 24, 35.00),
+(9, 24, 25, 55.00),
+(9, 23, 25, 90.00),
+(10, 26, 27, 55.00),
+(10, 27, 28, 35.00),
+(10, 26, 28, 90.00),
+(11, 29, 30, 20.00),
+(11, 30, 31, 25.00),
+(11, 29, 31, 45.00),
+(12, 32, 33, 25.00),
+(12, 33, 34, 20.00),
+(12, 32, 34, 45.00),
+(13, 35, 36, 12.00),
+(14, 37, 38, 12.00),
+(15, 39, 40, 10.00),
+(16, 41, 42, 10.00),
+(17, 43, 44, 10.00),
+(18, 45, 46, 10.00),
+(19, 47, 48, 18.00),
+(20, 49, 50, 18.00),
+(21, 51, 52, 8.00),
+(22, 53, 54, 8.00),
+(23, 55, 56, 15.00),
+(24, 57, 58, 15.00),
+(25, 59, 60, 12.00),
+(26, 61, 62, 12.00),
+(27, 63, 64, 9.00),
+(28, 65, 66, 9.00),
+(29, 67, 68, 14.00),
+(30, 69, 70, 14.00),
+(31, 71, 72, 20.00),
+(32, 73, 74, 20.00),
+(33, 75, 76, 22.00),
+(34, 77, 78, 22.00),
+(35, 79, 80, 7.00),
+(36, 81, 82, 7.00),
+(37, 83, 84, 11.00),
+(38, 85, 86, 11.00),
+(39, 87, 88, 13.00),
+(40, 89, 90, 13.00),
+(41, 91, 92, 9.00),
+(42, 93, 94, 9.00),
+(43, 95, 96, 15.00),
+(43, 96, 97, 20.00),
+(43, 95, 97, 35.00),
+(44, 98, 99, 20.00),
+(44, 99, 100, 15.00),
+(44, 98, 100, 35.00),
+(45, 101, 102, 25.00),
+(45, 102, 103, 30.00),
+(45, 101, 103, 55.00),
+(46, 104, 105, 30.00),
+(46, 105, 106, 25.00),
+(46, 104, 106, 55.00),
+(47, 107, 108, 40.00),
+(47, 108, 109, 60.00),
+(47, 107, 109, 100.00),
+(48, 110, 111, 60.00),
+(48, 111, 112, 40.00),
+(48, 110, 112, 100.00),
+(49, 113, 114, 12.00),
+(50, 115, 116, 12.00);
 
 INSERT INTO CLIENTE (id_cliente, nome, data_nascimento, cpf, telefone, email) VALUES
 (1, 'Lucas Andrade', '1995-03-12', '05433215080', '81988887701', 'lucas.andrade@email.com'),
@@ -294,31 +527,121 @@ INSERT INTO CLIENTE (id_cliente, nome, data_nascimento, cpf, telefone, email) VA
 INSERT INTO RESERVA 
 (id_cliente, id_viagem, id_ponto_subida, id_ponto_descida, qtd_passageiros, valor_total_reserva, status_reserva) 
 VALUES
--- Viagem 1: Garanhuns → Caruaru
-(1, 1, 1, 3, 1, 45.00, 'CONCLUIDA'),
-(2, 1, 1, 2, 2, 50.00, 'CONCLUIDA'), -- 25 × 2
-
--- Viagem 2: Caruaru → Garanhuns
-(3, 2, 4, 6, 1, 45.00, 'CONCLUIDA'),
-
--- Viagem 3: Garanhuns → Belo Jardim
-(4, 3, 7, 9, 1, 30.00, 'CONFIRMADA'),
-(5, 3, 7, 8, 2, 30.00, 'CONFIRMADA'), -- 15 × 2
-
--- Viagem 4: Belo Jardim → Garanhuns
-(1, 4, 10, 12, 1, 30.00, 'CONFIRMADA'),
-
--- Viagem 5: Garanhuns → Caetés
-(2, 5, 13, 14, 3, 30.00, 'CONFIRMADA'), -- 10 × 3
-
--- Viagem 6: Caetés → Garanhuns
-(3, 6, 15, 16, 1, 10.00, 'CONFIRMADA');
+(1,1,1,3,1,45.00,'CONCLUIDA'),
+(2,1,1,2,2,50.00,'CONCLUIDA'),
+(3,2,4,6,1,45.00,'CONCLUIDA'),
+(4,3,7,9,1,30.00,'CONCLUIDA'),
+(5,3,7,8,2,30.00,'CONCLUIDA'),
+(1,4,10,12,1,30.00,'CONCLUIDA'),
+(2,5,13,14,3,30.00,'CONCLUIDA'),
+(3,6,15,16,1,10.00,'CONCLUIDA'),
+(6,1,2,3,1,20.00,'CONCLUIDA'),
+(7,1,1,3,2,90.00,'CONCLUIDA'),
+(8,1,1,2,1,25.00,'CONCLUIDA'),
+(9,1,2,3,2,40.00,'CONCLUIDA'),
+(10,2,4,5,1,20.00,'CONCLUIDA'),
+(11,2,5,6,2,50.00,'CONCLUIDA'),
+(12,2,4,6,1,45.00,'CONCLUIDA'),
+(13,2,4,5,3,60.00,'CONCLUIDA'),
+(14,3,8,9,1,15.00,'CONCLUIDA'),
+(15,3,7,9,2,60.00,'CONCLUIDA'),
+(16,3,7,8,1,15.00,'CONCLUIDA'),
+(17,3,8,9,2,30.00,'CONCLUIDA'),
+(18,4,10,11,1,15.00,'CONCLUIDA'),
+(19,4,11,12,2,30.00,'CONCLUIDA'),
+(20,4,10,12,2,60.00,'CONCLUIDA'),
+(21,4,10,11,3,45.00,'CONCLUIDA'),
+(22,5,13,14,1,10.00,'CONCLUIDA'),
+(23,5,13,14,2,20.00,'CONCLUIDA'),
+(24,5,13,14,4,40.00,'CONCLUIDA'),
+(25,5,13,14,1,10.00,'CONCLUIDA'),
+(26,6,15,16,2,20.00,'CONCLUIDA'),
+(27,6,15,16,1,10.00,'CONCLUIDA'),
+(28,6,15,16,3,30.00,'CONCLUIDA'),
+(29,6,15,16,2,20.00,'CONCLUIDA'),
+(30,1,1,3,1,45.00,'CONCLUIDA'),
+(31,2,4,6,2,90.00,'CONCLUIDA'),
+(32,3,7,9,1,30.00,'CONCLUIDA'),
+(33,4,10,12,1,30.00,'CONCLUIDA'),
+(34,5,13,14,2,20.00,'CONCLUIDA'),
+(35,6,15,16,1,10.00,'CONCLUIDA'),
+(36,1,1,2,3,75.00,'CONCLUIDA'),
+(37,2,5,6,1,25.00,'CONCLUIDA'),
+(38,3,8,9,3,45.00,'CONCLUIDA'),
+(39,4,11,12,1,15.00,'CONCLUIDA'),
+(40,5,13,14,2,20.00,'CONCLUIDA'),
+(41,6,15,16,4,40.00,'CONCLUIDA'),
+(42,1,2,3,1,20.00,'CONCLUIDA'),
+(43,2,4,5,2,40.00,'CONCLUIDA'),
+(44,3,7,8,2,30.00,'CONCLUIDA'),
+(45,4,10,11,1,15.00,'CONCLUIDA'),
+(46,5,13,14,3,30.00,'CONCLUIDA'),
+(47,6,15,16,1,10.00,'CONCLUIDA'),
+(48,1,1,3,2,90.00,'CONCLUIDA'),
+(49,2,4,6,1,45.00,'CONCLUIDA'),
+(50,3,7,9,2,60.00,'CONCLUIDA'),
+(1,7,17,19,1,75.00,'CONFIRMADA'),
+(2,7,17,18,2,70.00,'CONFIRMADA'),
+(3,8,20,22,1,75.00,'CONFIRMADA'),
+(4,8,21,22,2,70.00,'CONFIRMADA'),
+(5,9,23,25,1,90.00,'CONFIRMADA'),
+(6,9,23,24,2,70.00,'CONFIRMADA'),
+(7,10,26,28,1,90.00,'CONFIRMADA'),
+(8,11,29,31,2,90.00,'CONFIRMADA'),
+(9,12,32,34,1,45.00,'CONFIRMADA');
 
 
 INSERT INTO AVALIACAO (id_avaliacao, pontuacao, comentario, id_motorista, id_cliente) VALUES
--- Avaliações da Viagem 1 (Motorista João Batista)
 (1, 5, 'Viagem tranquila, motorista muito educado e pontual.', 1, 1),
 (2, 4, 'Bom atendimento, apenas um pequeno atraso na saída.', 1, 2),
+(3, 5, 'Excelente viagem, direção segura e confortável.', 1, 3),
+(4, 5, 'Motorista muito atencioso e cuidadoso.', 2, 4),
+(5, 3, 'Viagem boa, mas poderia ter sido mais confortável.', 2, 5),
+(6, 5, 'Excelente experiência durante todo o trajeto.', 2, 1),
+(7, 4, 'Bom atendimento e veículo confortável.', 3, 2),
+(8, 5, 'Pontualidade e segurança na direção.', 3, 3),
+(9, 2, 'Motorista parecia um pouco apressado.', 1, 6),
+(10, 4, 'Boa viagem, motorista educado.', 1, 7),
+(11, 5, 'Condução segura e muito profissional.', 1, 8),
+(12, 3, 'Viagem razoável, nada excepcional.', 1, 9),
+(13, 5, 'Muito confortável e rápida.', 1, 10),
+(14, 4, 'Atendimento cordial e eficiente.', 1, 11),
+(15, 1, 'Não gostei da experiência, houve atraso significativo.', 1, 12),
+(16, 4, 'Boa organização na viagem.', 1, 13),
+(17, 5, 'Viagem segura e tranquila.', 2, 14),
+(18, 5, 'Ótimo serviço prestado.', 2, 15),
+(19, 3, 'Viagem ok, mas poderia melhorar o conforto.', 2, 16),
+(20, 5, 'Conforto e pontualidade.', 2, 17),
+(21, 4, 'Tudo ocorreu bem.', 2, 18),
+(22, 2, 'Motorista um pouco impaciente.', 2, 19),
+(23, 4, 'Boa viagem, recomendo.', 2, 20),
+(24, 5, 'Excelente trajeto.', 2, 21),
+(25, 4, 'Motorista bastante responsável.', 3, 22),
+(26, 5, 'Viagem rápida e segura.', 3, 23),
+(27, 3, 'Veículo poderia estar mais limpo.', 3, 24),
+(28, 5, 'Ótimo atendimento.', 3, 25),
+(29, 5, 'Motorista muito educado.', 3, 26),
+(30, 4, 'Viagem confortável.', 3, 27),
+(31, 5, 'Excelente condução.', 3, 28),
+(32, 2, 'Atraso na saída e pouca comunicação.', 3, 29),
+(33, 5, 'Muito satisfeito com a viagem.', 1, 30),
+(34, 4, 'Boa experiência.', 1, 31),
+(35, 5, 'Direção segura e tranquila.', 2, 32),
+(36, 3, 'Viagem mediana, poderia melhorar.', 2, 33),
+(37, 5, 'Conforto e segurança.', 3, 34),
+(38, 4, 'Serviço muito bom.', 3, 35),
+(39, 5, 'Excelente profissional.', 1, 36),
+(40, 3, 'Nada demais, mas cumpriu o esperado.', 1, 37),
+(41, 5, 'Recomendo o serviço.', 2, 38),
+(42, 4, 'Muito organizado.', 2, 39),
+(43, 5, 'Ótima experiência.', 3, 40),
+(44, 2, 'Demorou mais que o previsto.', 3, 41),
+(45, 5, 'Muito satisfeito.', 1, 42),
+(46, 4, 'Boa condução.', 1, 43),
+(47, 5, 'Excelente trajeto.', 2, 44),
+(48, 3, 'Viagem razoável.', 2, 45),
+(49, 5, 'Viagem muito tranquila.', 3, 46),
+(50, 4, 'Boa experiência geral.', 3, 47);
 
--- Avaliação da Viagem 2 (Motorista João Batista)
-(3, 5, 'Excelente viagem, direção segura e confortável.', 1, 3);
+INSERT INTO ADMIN (id_admin, nome, data_nascimento, cpf, telefone, email, senha) VALUES
+(1, 'Carlos Eduardo Menezes', '1998-07-18', '91384756210', '81997766554', 'admin.sistemavan@email.com', '$2a$10$8K1p/a06Ewe7AiAoyY9vOuTf.D.DkZAnvA9GZp.S4f.3hF.qO1C2K');
