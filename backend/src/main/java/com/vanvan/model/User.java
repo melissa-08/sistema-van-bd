@@ -1,7 +1,7 @@
 package com.vanvan.model;
 
-import com.vanvan.enums.UserRole;
 import jakarta.persistence.*;
+import com.vanvan.enums.UserRole;
 import lombok.Getter;
 import lombok.Setter;
 import org.jspecify.annotations.NullMarked;
@@ -43,10 +43,10 @@ public abstract class User implements UserDetails {
     @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
 
-    public User() {
+    protected User() {
     }
 
-    public User(String name, String cpf, String phone, String email, String password, UserRole role, LocalDate birthDate) {
+    protected User(String name, String cpf, String phone, String email, String password, UserRole role, LocalDate birthDate) {
         this.name = name;
         this.cpf = cpf;
         this.phone = phone;

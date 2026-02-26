@@ -13,10 +13,10 @@ import java.time.temporal.ChronoUnit;
 public class JwtService {
 
     @Value("${jwt.secret}")
-    private String SECRET;
+    private String secret;
 
     private Algorithm getAlgorithm() {
-        return Algorithm.HMAC256(SECRET);
+        return Algorithm.HMAC256(secret);
     }
 
 

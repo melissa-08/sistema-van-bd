@@ -31,15 +31,14 @@ public class DriverRegisterRequestDTO extends RegisterDTO {
     @Override
     public User toEntity() {
         UserRole parsedRole = UserRole.valueOf(role.toUpperCase());
-
+        Driver driver = null;
         if (parsedRole == UserRole.DRIVER) {
-            return new Driver(
+            driver = new Driver(
                     name, cpf, phone, email, password,
                     cnh, pixKey, birthDate
             );
         }
-
-        throw new IllegalArgumentException("Invalid role: " + role);//TODO: exception aqui
+        return driver;
     }
 
 }

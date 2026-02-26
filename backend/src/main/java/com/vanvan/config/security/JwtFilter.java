@@ -8,10 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.vanvan.repository.UserRepository;
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,31 +20,21 @@ import lombok.RequiredArgsConstructor;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final UserRepository userRepository;
-    private final JwtService jwtService; 
+    private final JwtService jwtService;
 
     @Override
     @NullMarked
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var token = this.recoverToken(request);
+        if (token != null) {
+            var email = jwtService.validateAndGetSubject(token);
+            UserDetails user = userRepository.findByEmail(email);
 
-        if (token != null){
-
-            try{
-                var email = jwtService.validateAndGetSubject(token);
-                UserDetails user = userRepository.findByEmail(email);
-
-                if(user != null){
-                    var auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-                    SecurityContextHolder.getContext().setAuthentication(auth);
-                }   
-            } catch (JWTVerificationException e) {
-                //se o token for invalido retorna erro 401
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write("Token invalido ou expirado");
-                return;
+            if (user != null) {
+                var auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(auth);
             }
         }
-
         filterChain.doFilter(request, response);
     }
 
