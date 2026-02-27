@@ -1,0 +1,420 @@
+<!-- Main Container -->
+<div class="flex flex-col gap-[45px] items-center relative w-full min-h-full ">
+
+  <!-- Background Image (Hero) - fixed, starts ~100px below the top to clear the navbar -->
+  <div class="fixed top-[-50px] left-0 right-0 h-[40vh] z-0 overflow-hidden pointer-events-none">
+    <img src="assets/Viagens-HeaderImage.jpg"
+         class="w-full h-full object-cover object-bottom" alt="background">
+    <div class="absolute inset-0 bg-black/25"></div>
+  </div>
+
+  <!-- Hero Title & Next Trip Card Container -->
+  <div class="flex flex-col gap-[14px] w-full relative z-10 mt-[90px]">
+
+    <!-- Hero Title - pushed down to sit above the next trip card, in the middle of the bg image -->
+    <div class="flex items-center gap-3 self-start">
+      <div class="size-8 bg-white shrink-0"
+           style="-webkit-mask: url(assets/icons/airplane.svg) no-repeat center / contain; mask: url(assets/icons/airplane.svg) no-repeat center / contain;"></div>
+      <h1 class="font-sans text-header-2 text-white whitespace-nowrap">Próxima Viagem</h1>
+    </div>
+
+    <!-- ===== PRÓXIMA VIAGEM (Next Trip Card) ===== -->
+    <div class="next-trip-card w-full rounded-[24px] py-6 px-5 flex flex-row gap-5 items-stretch">
+
+      <!-- Left: Date Badge -->
+      <div class="w-[110px] h-auto rounded-[20px] flex flex-col items-center justify-center shrink-0 bg-secondary text-white font-sans font-bold self-start my-auto min-h-[110px]">
+        <span class="text-small uppercase tracking-[0.3px]">{{ nextTrip.month }}</span>
+        <span class="text-header-2 leading-none">{{ nextTrip.day }}</span>
+        <span class="text-small mt-[2px]">{{ nextTrip.time }}</span>
+      </div>
+
+      <!-- Middle: Trip Details -->
+      <div class="flex flex-col justify-center gap-[6px] min-w-0 flex-1 py-1">
+        <!-- Route -->
+        <div class="flex items-center gap-2 flex-wrap">
+          <span class="font-sans text-header-2 text-text">{{ nextTrip.origin }}</span>
+          <div class="size-10 shrink-0 bg-secondary"
+               style="-webkit-mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain; mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain;"></div>
+          <span class="font-sans text-header-2 text-text">{{ nextTrip.destination }}</span>
+        </div>
+        <!-- Price + Vehicle + Location row -->
+        <div class="flex items-center gap-5 flex-wrap">
+          <div class="flex gap-1 items-center">
+            <div class="size-5 shrink-0 bg-subtle-text"
+                 style="-webkit-mask: url(assets/icons/dollar-circle.svg) no-repeat center / contain; mask: url(assets/icons/dollar-circle.svg) no-repeat center / contain;"></div>
+            <span class="font-sans text-small text-subtle-text">{{ nextTrip.price }}</span>
+          </div>
+          <div class="flex gap-1 items-center">
+            <div class="size-5 shrink-0 bg-subtle-text"
+                 style="-webkit-mask: url(assets/icons/bus.svg) no-repeat center / contain; mask: url(assets/icons/bus.svg) no-repeat center / contain;"></div>
+            <span class="font-sans text-small text-subtle-text">{{ nextTrip.vehicle }}</span>
+          </div>
+          <div class="flex gap-1 items-center">
+            <div class="size-5 shrink-0 bg-subtle-text"
+                 style="-webkit-mask: url(assets/icons/location.svg) no-repeat center / contain; mask: url(assets/icons/location.svg) no-repeat center / contain;"></div>
+            <span class="font-sans text-small text-subtle-text">{{ nextTrip.pickupPoint }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Container: Column layout (Status top, Info bottom) -->
+      <div class="flex flex-col justify-between py-4 items-end gap-2 shrink-0 min-w-fit">
+        <!-- Top: Status Tag -->
+        <app-tag [label]="nextTrip.statusLabel" [variant]="nextTrip.variant"></app-tag>
+
+        <!-- Bottom: Driver Info + Button Row -->
+        <div class="flex items-center gap-4">
+          <!-- Driver Info Block -->
+          <div class="flex items-center gap-3">
+            <div class="size-10 rounded-full bg-white/80 flex items-center justify-center shrink-0">
+              <div class="size-6 bg-text"
+                   style="-webkit-mask: url(assets/icons/user.svg) no-repeat center / contain; mask: url(assets/icons/user.svg) no-repeat center / contain;"></div>
+            </div>
+            <div class="flex flex-col gap-[2px]">
+              <span class="font-sans text-bold text-text">{{ nextTrip.driverName }}</span>
+              <a class="font-sans text-small text-secondary underline cursor-pointer hover:text-text transition-colors">{{ nextTrip.driverContact }}</a>
+            </div>
+            <div class="flex items-center gap-1">
+              <div class="size-5 shrink-0 bg-text"
+                   style="-webkit-mask: url(assets/icons/star.svg) no-repeat center / contain; mask: url(assets/icons/star.svg) no-repeat center / contain;"></div>
+              <span class="font-sans text-bold text-text">{{ nextTrip.driverRating }}</span>
+            </div>
+          </div>
+
+          <!-- Vertical Divider (optional, but good for separation if needed, otherwise gap handles it) -->
+          <!-- <div class="w-[1px] h-8 bg-accent/30"></div> -->
+
+          <!-- Button -->
+          <app-buttons variant="primary" (click)="openTicketPopup(nextTrip)">
+            <div class="size-5 bg-white shrink-0"
+                 style="-webkit-mask: url(assets/icons/scan-barcode.svg) no-repeat center / contain; mask: url(assets/icons/scan-barcode.svg) no-repeat center / contain;"></div>
+            VER BILHETE
+          </app-buttons>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== BOTTOM TWO-COLUMN LAYOUT (50/50 split with 1.5rem gap) ===== -->
+  <div class="relative z-10 w-full grid grid-cols-2 gap-6 items-start ">
+
+    <!-- ===== LEFT: Viagens Agendadas ===== -->
+    <div class="flex flex-col gap-4 w-full bg-light rounded-[24px] p-5 ">
+      <!-- Section Header -->
+      <div class="flex items-center justify-between w-full">
+        <span class="font-sans text-header-2 text-text">Viagens Agendadas</span>
+        <div class="flex items-center gap-2">
+          <button (click)="prevScheduled()"
+                  [disabled]="scheduledScrollIndex === 0"
+                  [ngClass]="scheduledScrollIndex === 0 ? 'bg-accent' : 'bg-dark'"
+                  class="size-[36px] rounded-full flex items-center justify-center cursor-pointer transition-colors disabled:opacity-30 disabled:cursor-not-allowed hover:opacity-80">
+            <div class="size-5 bg-white"
+                 style="-webkit-mask: url(assets/icons/arrow_back.svg) no-repeat center / contain; mask: url(assets/icons/arrow_back.svg) no-repeat center / contain;"></div>
+          </button>
+          <button (click)="nextScheduled()"
+                  [disabled]="scheduledScrollIndex >= scheduledTrips.length - 1"
+                  [ngClass]="scheduledScrollIndex >= scheduledTrips.length - 1 ? 'bg-accent' : 'bg-dark'"
+                  class="size-[36px] rounded-full flex items-center justify-center cursor-pointer transition-colors disabled:opacity-30 disabled:cursor-not-allowed hover:opacity-80">
+            <div class="size-5 bg-white"
+                 style="-webkit-mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain; mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain;"></div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Scheduled Trip Expanded Card -->
+      <div class=" flex flex-col gap-5 w-full" *ngIf="currentScheduledTrip as trip">
+        <!-- Top Row: Date + Trip Info + Status -->
+        <div class="flex gap-1 items-start">
+          <!-- Date Badge - large number style matching screenshot -->
+          <div class="flex flex-col items-center shrink-0 font-sans font-bold text-subtle-text leading-none bg-white py-3 px-8 rounded-s-[24px] rounded-e-[4px] w-[110px] h-auto">
+            <span class="text-small uppercase tracking-[0.3px]">{{ trip.month }}</span>
+            <span class="text-header-2 leading-none font-bold text-text">{{ trip.day }}</span>
+            <span class="text-small mt-[4px]">{{ trip.time }}</span>
+          </div>
+
+          <!-- Trip Details -->
+          <div class="flex-1 flex flex-col gap-[6px] min-w-0 bg-white p-4 rounded-s-[4px] rounded-e-[24px]">
+            <!-- Route + Status -->
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <div class="flex items-center gap-2">
+                <span class="text-header-3 text-text">{{ trip.origin }}</span>
+                <div class="size-5 shrink-0 bg-text"
+                     style="-webkit-mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain; mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain;"></div>
+                <span class="text-header-3 text-text">{{ trip.destination }}</span>
+              </div>
+              <app-tag [label]="trip.statusLabel" [variant]="trip.variant"></app-tag>
+            </div>
+            <!-- Price + Vehicle -->
+            <div class="flex items-center gap-4 flex-wrap">
+              <div class="flex gap-1 items-center">
+                <div class="size-4 shrink-0 bg-subtle-text"
+                     style="-webkit-mask: url(assets/icons/dollar-circle.svg) no-repeat center / contain; mask: url(assets/icons/dollar-circle.svg) no-repeat center / contain;"></div>
+                <span class="font-sans text-small text-subtle-text">{{ trip.price }}</span>
+              </div>
+              <div class="flex gap-1 items-center">
+                <div class="size-4 shrink-0 bg-subtle-text"
+                     style="-webkit-mask: url(assets/icons/bus.svg) no-repeat center / contain; mask: url(assets/icons/bus.svg) no-repeat center / contain;"></div>
+                <span class="font-sans text-small text-subtle-text">{{ trip.vehicle }}</span>
+              </div>
+            </div>
+            <!-- Pickup Point -->
+            <div class="flex gap-1 items-center">
+              <div class="size-4 shrink-0 bg-subtle-text"
+                   style="-webkit-mask: url(assets/icons/location.svg) no-repeat center / contain; mask: url(assets/icons/location.svg) no-repeat center / contain;"></div>
+              <span class="font-sans text-small text-subtle-text">{{ trip.pickupPoint }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="w-full h-[1px] bg-accent/40"></div>
+
+        <!-- Driver Row -->
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="size-12 rounded-full bg-white flex items-center justify-center shrink-0">
+              <div class="size-6 bg-dark"
+                   style="-webkit-mask: url(assets/icons/user.svg) no-repeat center / contain; mask: url(assets/icons/user.svg) no-repeat center / contain;"></div>
+            </div>
+            <div class="flex flex-col gap-[2px]">
+              <span class="text-medium text-text">{{ trip.driverName }}</span>
+              <a class="text-link-text text-secondary underline cursor-pointer hover:text-secondary/80 transition-colors">{{ trip.driverContact }}</a>
+            </div>
+          </div>
+          <div class="flex items-center gap-1">
+            <div class="size-5 shrink-0 bg-text"
+                 style="-webkit-mask: url(assets/icons/star.svg) no-repeat center / contain; mask: url(assets/icons/star.svg) no-repeat center / contain;"></div>
+            <span class="font-sans text-bold text-text">{{ trip.driverRating }}</span>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="w-full h-[1px] bg-accent/40"></div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col gap-3 w-full">
+          <app-buttons variant="secondary" [fullWidth]="true" customClass="!bg-white !hover:bg-accent/80" (click)="openTicketPopup(currentScheduledTrip)">
+            <div class="size-5 bg-secondary shrink-0"
+                 style="-webkit-mask: url(assets/icons/scan-barcode.svg) no-repeat center / contain; mask: url(assets/icons/scan-barcode.svg) no-repeat center / contain;"></div>
+            VER BILHETE
+          </app-buttons>
+          <app-buttons variant="primary" [fullWidth]="true" (click)="openCancelPopup(currentScheduledTrip)">
+            <div class="size-5 bg-white shrink-0"
+                 style="-webkit-mask: url(assets/icons/close.svg) no-repeat center / contain; mask: url(assets/icons/close.svg) no-repeat center / contain;"></div>
+            CANCELAR VIAGEM
+          </app-buttons>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== RIGHT: Viagens Anteriores ===== -->
+    <div class="flex flex-col gap-4 w-full bg-light rounded-[24px] p-4">
+      <!-- Section Header -->
+      <span class="text-header-2 text-text">Viagens anteriores</span>
+
+      <!-- Past Trips Container -->
+      <div class="flex flex-col gap-3 w-full">
+        <div *ngFor="let trip of pastTrips"
+             class="bg-white rounded-[18px] overflow-hidden w-full">
+          <!-- Trip Info Row -->
+          <div class="flex items-center gap-3 p-3">
+            <!-- Date Badge -->
+            <div class="w-[48px] h-[48px] rounded-[14px] flex flex-col items-center justify-center shrink-0 bg-light font-sans font-bold text-subtle-text">
+              <span class="text-[9px] uppercase tracking-[0.3px]">{{ trip.month }}</span>
+              <span class="text-[20px] leading-none font-bold">{{ trip.day }}</span>
+            </div>
+            <!-- Route + Price -->
+            <div class="flex flex-col gap-[3px] flex-1 min-w-0">
+              <div class="flex gap-[5px] items-center">
+                <span class="font-sans text-bold text-text">{{ trip.origin }}</span>
+                <div class="size-4 shrink-0 bg-text"
+                     style="-webkit-mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain; mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain;"></div>
+                <span class="font-sans text-bold text-text">{{ trip.destination }}</span>
+              </div>
+              <div class="flex gap-1 items-center">
+                <div class="size-4 shrink-0 bg-subtle-text"
+                     style="-webkit-mask: url(assets/icons/dollar-circle.svg) no-repeat center / contain; mask: url(assets/icons/dollar-circle.svg) no-repeat center / contain;"></div>
+                <span class="font-sans text-small text-subtle-text">{{ trip.price }}</span>
+              </div>
+            </div>
+            <!-- Status + Details -->
+            <div class="flex flex-col gap-1 items-end shrink-0">
+              <app-tag [label]="trip.statusLabel" [variant]="trip.variant"></app-tag>
+              <a class="font-sans text-small text-subtle-text underline cursor-pointer">Detalhes</a>
+            </div>
+          </div>
+          <div class="m-2">
+            <!-- Viajar Novamente Button -->
+            <app-buttons variant="primary" [fullWidth]="true" customClass="!bg-secondary">
+              <div class="size-5 bg-white shrink-0"
+                   style="-webkit-mask: url(assets/icons/refresh-2.svg) no-repeat center / contain; mask: url(assets/icons/refresh-2.svg) no-repeat center / contain;"></div>
+              VIAJAR NOVAMENTE
+            </app-buttons>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== TICKET POPUP (VER BILHETE) ===== -->
+  <div *ngIf="showTicketPopup"
+       class="fixed inset-0 z-50 flex items-center justify-center"
+       (click)="closeTicketPopup()">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+
+    <!-- Modal Card -->
+    <div *ngIf="ticketTripRef as trip"
+         class="relative z-10 bg-white rounded-[24px] py-6 px-10 flex flex-col gap-5 max-w-[1200px] w-full mx-4 shadow-lg"
+         (click)="$event.stopPropagation()">
+
+      <!-- Title -->
+      <h2 class="font-sans text-header-2 text-text">Seu bilhete</h2>
+
+      <!-- Code Row -->
+      <div class="flex items-baseline justify-between">
+        <div class="flex flex-col gap-1">
+          <span class="font-sans text-header-3 text-text">Código gerado:</span>
+          <span class="font-sans text-small text-subtle-text">Ou, utilize o qr code:</span>
+        </div>
+        <span class="font-sans text-header-2 text-primary">{{ ticketCode }}</span>
+      </div>
+
+      <!-- QR Code Placeholder -->
+      <div class="flex justify-center">
+        <div class="w-[160px] h-[160px] rounded-[8px] bg-dark/80"></div>
+      </div>
+
+      <!-- Info Row -->
+      <div class="flex items-center gap-6 flex-wrap">
+        <div class="flex gap-2 items-center">
+          <div class="size-5 shrink-0 bg-secondary"
+               style="-webkit-mask: url(assets/icons/clock.svg) no-repeat center / contain; mask: url(assets/icons/clock.svg) no-repeat center / contain;"></div>
+          <span class="font-sans text-small text-secondary">Chegue 15 minutos antes</span>
+        </div>
+        <div class="flex gap-2 items-center">
+          <div class="size-5 shrink-0 bg-secondary"
+               style="-webkit-mask: url(assets/icons/location.svg) no-repeat center / contain; mask: url(assets/icons/location.svg) no-repeat center / contain;"></div>
+          <span class="font-sans text-small text-secondary">{{ trip.pickupPoint }}</span>
+        </div>
+        <div class="flex gap-2 items-center">
+          <div class="size-5 shrink-0 bg-secondary"
+               style="-webkit-mask: url(assets/icons/bus.svg) no-repeat center / contain; mask: url(assets/icons/bus.svg) no-repeat center / contain;"></div>
+          <span class="font-sans text-small text-secondary">{{ trip.vehicle }}</span>
+        </div>
+      </div>
+
+      <!-- Close Button (right-aligned) -->
+      <div class="flex justify-end">
+        <app-buttons variant="secondary" [fullWidth]="false" (click)="closeTicketPopup()">
+          FECHAR
+        </app-buttons>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- ===== CANCEL TRIP POPUP ===== -->
+  <div *ngIf="showCancelPopup"
+       class="fixed inset-0 z-50 flex items-center justify-center"
+       (click)="closeCancelPopup()">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+
+    <!-- Modal Card -->
+    <div *ngIf="cancelTripRef as trip"
+         class="relative z-10 bg-white rounded-[24px] py-6 px-16 flex flex-col gap-5 max-w-[1200px] w-full mx-4 shadow-lg"
+         (click)="$event.stopPropagation()">
+
+      <!-- Title + Subtitle -->
+      <div class="flex flex-col gap-2">
+        <h2 class="font-sans text-header-1 text-text">Cancelar a viagem</h2>
+        <p class="font-sans text-medium text-subtle-text">Tem certeza que deseja cancelar sua viagem?</p>
+      </div>
+
+      <!-- Trip Info Row (reuses scheduled trip expanded card layout) -->
+      <div class="flex gap-1 items-start">
+        <!-- Date Badge -->
+        <div class="flex flex-col items-center shrink-0 font-sans font-bold text-subtle-text leading-none bg-light py-3 px-8 rounded-s-[24px] rounded-e-[4px] w-[110px] h-auto">
+          <span class="text-small uppercase tracking-[0.3px]">{{ trip.month }}</span>
+          <span class="text-header-2 leading-none font-bold text-text">{{ trip.day }}</span>
+          <span class="text-small mt-[4px]">{{ trip.time }}</span>
+        </div>
+
+        <!-- Trip Details -->
+        <div class="flex-1 flex flex-col gap-[6px] min-w-0 bg-light p-4 rounded-s-[4px] rounded-e-[24px]">
+          <!-- Route + Status -->
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <div class="flex items-center gap-2">
+              <span class="text-header-3 text-text">{{ trip.origin }}</span>
+              <div class="size-5 shrink-0 bg-text"
+                   style="-webkit-mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain; mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain;"></div>
+              <span class="text-header-3 text-text">{{ trip.destination }}</span>
+            </div>
+            <app-tag [label]="trip.statusLabel" [variant]="trip.variant"></app-tag>
+          </div>
+          <!-- Price + Vehicle -->
+          <div class="flex items-center gap-4 flex-wrap">
+            <div class="flex gap-1 items-center">
+              <div class="size-4 shrink-0 bg-subtle-text"
+                   style="-webkit-mask: url(assets/icons/dollar-circle.svg) no-repeat center / contain; mask: url(assets/icons/dollar-circle.svg) no-repeat center / contain;"></div>
+              <span class="font-sans text-small text-subtle-text">{{ trip.price }}</span>
+            </div>
+            <div class="flex gap-1 items-center">
+              <div class="size-4 shrink-0 bg-subtle-text"
+                   style="-webkit-mask: url(assets/icons/bus.svg) no-repeat center / contain; mask: url(assets/icons/bus.svg) no-repeat center / contain;"></div>
+              <span class="font-sans text-small text-subtle-text">{{ trip.vehicle }}</span>
+            </div>
+          </div>
+          <!-- Pickup Point -->
+          <div class="flex gap-1 items-center">
+            <div class="size-4 shrink-0 bg-subtle-text"
+                 style="-webkit-mask: url(assets/icons/location.svg) no-repeat center / contain; mask: url(assets/icons/location.svg) no-repeat center / contain;"></div>
+            <span class="font-sans text-small text-subtle-text">{{ trip.pickupPoint }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="w-full h-[1px] bg-accent/40"></div>
+
+      <!-- Driver Row -->
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="size-12 rounded-full bg-white flex items-center justify-center shrink-0">
+            <div class="size-6 bg-dark"
+                 style="-webkit-mask: url(assets/icons/user.svg) no-repeat center / contain; mask: url(assets/icons/user.svg) no-repeat center / contain;"></div>
+          </div>
+          <div class="flex flex-col gap-[2px]">
+            <span class="text-medium text-text">{{ trip.driverName }}</span>
+            <a class="text-link-text text-secondary underline cursor-pointer hover:text-secondary/80 transition-colors">{{ trip.driverContact }}</a>
+          </div>
+        </div>
+        <div class="flex items-center gap-1">
+          <div class="size-5 shrink-0 bg-text"
+               style="-webkit-mask: url(assets/icons/star.svg) no-repeat center / contain; mask: url(assets/icons/star.svg) no-repeat center / contain;"></div>
+          <span class="font-sans text-bold text-text">{{ trip.driverRating }}</span>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="w-full h-[1px] bg-accent/40"></div>
+
+      <!-- Action Buttons (side by side) -->
+      <div class="flex gap-3 w-full justify-end">
+        <app-buttons variant="secondary" [fullWidth]="false" (click)="closeCancelPopup()" customClass="!bg-light !hover:bg-white/80 min-w-[120px]">
+          RETORNAR
+        </app-buttons>
+        <app-buttons variant="primary" [fullWidth]="false" (click)="confirmCancelTrip()" customClass="min-w-[120px]">
+          <div class="size-5 bg-white shrink-0"
+               style="-webkit-mask: url(assets/icons/close.svg) no-repeat center / contain; mask: url(assets/icons/close.svg) no-repeat center / contain;"></div>
+          CANCELAR
+        </app-buttons>
+      </div>
+    </div>
+  </div>
+
+</div>
