@@ -35,9 +35,13 @@ export class MotoristaEditComponent implements OnInit {
     if (this.motorista) {
       this.motoristaEditado = { ...this.motorista };
       this.motoristaEditado.phone = this.formatPhone(this.motorista.phone);
+      this.motoristaEditado.cpf = this.motorista.cpf || (this.motorista as any).identidade || '';
+
       if (this.motorista.registrationStatus === 'REJECTED' && this.motorista.rejectionReason) {
         this.rejectionReason = this.motorista.rejectionReason;
       }
+
+      console.log('Dados do motorista recebidos:', this.motorista);
     }
   }
 
@@ -117,7 +121,7 @@ export class MotoristaEditComponent implements OnInit {
       email: this.motoristaEditado.email,
       phone: rawPhone,
       cnh: this.motoristaEditado.cnh,
-      cpf: this.motoristaEditado.cpf,
+      cpf: this.motoristaEditado.cpf || this.motoristaEditado.identidade,
     }).subscribe({
       next: () => {
         // Se o status mudou, chama updateDriverStatus em seguida

@@ -36,7 +36,6 @@ export class ClienteService {
       .set('page', page.toString())
       .set('size', size.toString());
       
-    // Assumindo que a rota do seu backend para clientes seja /clients ou /users
     return this.http
       .get<PageResponse<Cliente>>(`${this.API_URL}/clients`, { params })
       .pipe(map(response => response.content));
@@ -46,7 +45,7 @@ export class ClienteService {
     return this.http.post<Cliente>(`${this.API_URL}/clients`, cliente);
   }
 
-  editar(cliente: Partial<Cliente> & { id: string }): Observable<Cliente> {
+  editar(cliente: Partial<Cliente> & { id: string; }, payload: any): Observable<Cliente> {
     return this.http.put<Cliente>(`${this.API_URL}/clients/${cliente.id}`, cliente);
   }
 

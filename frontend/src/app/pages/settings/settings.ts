@@ -10,7 +10,6 @@ import { SettingsService, Journey } from '../../services/settings.service';
   templateUrl: './settings.html'
 })
 export class SettingsComponent implements OnInit {
-  // Injeta o serviço de comunicação com o back-end
   private settingsService = inject(SettingsService);
 
   searchQuery = '';

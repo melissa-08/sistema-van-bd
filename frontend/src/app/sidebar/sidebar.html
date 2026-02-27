@@ -91,14 +91,14 @@
       </div>
       
       <!-- Administração Geral -->
-      <div class="content-stretch flex flex-col items-start relative shrink-0 w-full" (click)="setActivePage('admin')">
-        <div [class]="'content-stretch flex gap-[10px] h-[62px] items-center px-[18px] py-[14px] relative rounded-[10px] shrink-0 w-full cursor-pointer transition-colors ' + (activePage() === 'admin' ? 'bg-accent' : 'bg-white hover:bg-white/50')">
+      <div class="content-stretch flex flex-col items-start relative shrink-0 w-full" (click)="setActivePage('settings')">
+        <div [class]="'content-stretch flex gap-[10px] h-[62px] items-center px-[18px] py-[14px] relative rounded-[10px] shrink-0 w-full cursor-pointer transition-colors ' + (activePage() === 'settings' ? 'bg-accent' : 'bg-white hover:bg-white/50')">
           <div class="relative shrink-0 size-[34px]">
             <div class="absolute contents inset-0">
-              <div [class]="'size-full ' + (activePage() === 'admin' ? 'bg-dark' : 'bg-subtle-text')" [style.mask-image]="'url(' + Setting + ')'" [style.webkit-mask-image]="'url(' + Setting + ')'" style="mask-repeat: no-repeat; mask-position: center; mask-size: contain;"></div>
+              <div [class]="'size-full ' + (activePage() === 'settings' ? 'bg-dark' : 'bg-subtle-text')" [style.mask-image]="'url(' + Setting + ')'" [style.webkit-mask-image]="'url(' + Setting + ')'" style="mask-repeat: no-repeat; mask-position: center; mask-size: contain;"></div>
             </div>
           </div>
-          <div [class]="'content-stretch flex flex-col font-medium items-start justify-center not-italic relative shrink-0 ' + (activePage() === 'admin' ? 'text-dark' : 'text-subtle-text')">
+          <div [class]="'content-stretch flex flex-col font-medium items-start justify-center not-italic relative shrink-0 ' + (activePage() === 'settings' ? 'text-dark' : 'text-subtle-text')">
             <div class="flex flex-col justify-center leading-[0] relative shrink-0 text-medium w-full">
               <p class="leading-[1.2] whitespace-pre-wrap m-0">Administração</p>
             </div>
@@ -170,9 +170,9 @@
       </div>
       
       <!-- Administração -->
-      <div (click)="setActivePage('admin')" [class]="'content-stretch flex h-[62px] w-[62px] items-center justify-center relative rounded-[10px] shrink-0 cursor-pointer transition-colors ' + (activePage() === 'admin' ? 'bg-accent' : 'bg-white hover:bg-white/50')">
+      <div (click)="setActivePage('settings')" [class]="'content-stretch flex h-[62px] w-[62px] items-center justify-center relative rounded-[10px] shrink-0 cursor-pointer transition-colors ' + (activePage() === 'settings' ? 'bg-accent' : 'bg-white hover:bg-white/50')">
          <div class="relative shrink-0 size-[34px]">
-           <div [class]="'size-full ' + (activePage() === 'admin' ? 'bg-dark' : 'bg-subtle-text')" [style.mask-image]="'url(' + Setting + ')'" [style.webkit-mask-image]="'url(' + Setting + ')'" style="mask-repeat: no-repeat; mask-position: center; mask-size: contain;"></div>
+           <div [class]="'size-full ' + (activePage() === 'settings' ? 'bg-dark' : 'bg-subtle-text')" [style.mask-image]="'url(' + Setting + ')'" [style.webkit-mask-image]="'url(' + Setting + ')'" style="mask-repeat: no-repeat; mask-position: center; mask-size: contain;"></div>
          </div>
       </div>
     </div>
