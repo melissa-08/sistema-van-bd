@@ -1,43 +1,44 @@
 --1. Detalhes das Viagens (Une Motorista, Veículo e Rota)
+DROP VIEW IF EXISTS v_detalhes_viagem;
 CREATE VIEW v_detalhes_viagem AS
 SELECT 
-    v.id_viagem,
-    m.nome AS motorista,
-    ve.modelo AS veiculo,
-    ve.placa,
-    r.origem,
-    r.destino,
-    v.data_hora
-FROM VIAGEM v
-JOIN VEICULO ve ON v.id_veiculo = ve.id_veiculo
-JOIN MOTORISTA m ON ve.id_motorista = m.id_motorista
-JOIN ROTA r ON v.id_rota = r.id_rota;
+    t.id AS travel_id,
+    d.name AS driver_name,
+    v.model AS vehicle_model,
+    v.plate AS vehicle_plate,
+    r.name AS route_name,
+    t.departure_time,
+    t.status
+FROM travels t
+JOIN vehicles v ON t.vehicle_id = v.id
+JOIN drivers d ON v.driver_id = d.id
+JOIN routes r ON t.route_id = r.id;
 
 -- 2. Relatório de Ocupação e Receita
 DROP VIEW IF EXISTS v_relatorio_financeiro_viagem;
 CREATE VIEW v_relatorio_financeiro_viagem AS
 SELECT 
-    v.id_viagem,
-    r.origem,
-    r.destino,
-    COUNT(res.id_reserva) AS total_passageiros,
-    SUM(pt.valor) AS receita_total
-FROM VIAGEM v
-JOIN ROTA r ON v.id_rota = r.id_rota
-LEFT JOIN RESERVA res ON v.id_viagem = res.id_viagem
-LEFT JOIN PRECOS_TRECHOS pt ON r.id_rota = pt.id_rota
-GROUP BY v.id_viagem, r.origem, r.destino;
+    t.id AS travel_id,
+    r.name AS route_name,
+    t.departure_time,
+    COALESCE(SUM(res.passenger_count), 0) AS total_passengers,
+    COALESCE(SUM(res.total_value), 0) AS total_revenue
+FROM travels t
+JOIN routes r ON t.route_id = r.id
+LEFT JOIN reservations res ON t.id = res.travel_id
+GROUP BY t.id, r.name, t.departure_time;
 
 -- 3. Ranking de Avaliações por Motorista
 DROP VIEW IF EXISTS v_ranking_motoristas;
 CREATE VIEW v_ranking_motoristas AS
 SELECT 
-    m.nome AS motorista,
-    AVG(a.nota) AS media_avaliacao,
-    COUNT(a.id_avaliacao) AS total_feedbacks
-FROM MOTORISTA m
-JOIN VEICULO ve ON m.id_motorista = ve.id_motorista
-JOIN VIAGEM vi ON ve.id_veiculo = vi.id_veiculo
-JOIN AVALIACAO a ON vi.id_viagem = a.id_viagem
-GROUP BY m.id_motorista, m.nome
-HAVING COUNT(a.id_avaliacao) > 0;
+    d.id AS driver_id,
+    d.name AS driver_name,
+    ROUND(AVG(ra.score), 2) AS average_rating,
+    COUNT(ra.id) AS total_feedbacks
+FROM drivers d
+JOIN vehicles v ON d.id = v.driver_id
+JOIN travels t ON v.id = t.vehicle_id
+JOIN ratings ra ON t.id = ra.travel_id
+GROUP BY d.id, d.name
+HAVING COUNT(ra.id) > 0;
