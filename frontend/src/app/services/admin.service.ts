@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export interface DriverAdmin {
+  cpf: string;
   id: string;
   name: string;
   email: string;

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-// import { ClienteService } from '../../services/cliente.service';
+import { ClienteService } from '../../../services/client.service'; 
 
 @Component({
   selector: 'app-cliente-delete',
@@ -15,7 +15,7 @@ export class ClienteDeleteComponent {
 
   carregando = false;
 
-  constructor() {}
+  constructor(private service: ClienteService) {}
 
   fechar() {
     this.aoFechar.emit(false);
@@ -27,23 +27,16 @@ export class ClienteDeleteComponent {
     this.carregando = true;
     console.log('Excluindo ID:', this.cliente.id);
 
-    // SIMULAÇÃO
-    setTimeout(() => {
-      this.carregando = false;
-      this.aoFechar.emit(true);
-    }, 1000);
-
-    /* CÓDIGO REAL:
     this.service.excluir(this.cliente.id).subscribe({
       next: () => {
         this.carregando = false;
-        this.aoFechar.emit(true);
+        this.aoFechar.emit(true); // Fecha o modal e recarrega a lista
       },
-      error: (err) => {
+      error: (err: any) => {
         this.carregando = false;
-        alert('Erro ao excluir');
+        console.error('Erro ao excluir:', err);
+        alert('Erro ao excluir. Verifique a aba Network (F12).');
       }
     });
-    */
   }
 }
