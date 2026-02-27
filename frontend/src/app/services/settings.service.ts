@@ -2,11 +2,20 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-export interface Journey {
-  id?: number; 
-  name: string;
-  origin: string;
-  destination: string;
+export interface TravelPriceDTO {
+  boardingStopId: string;
+  dropOffStopId: string;
+  price: number;
+}
+
+export interface TravelResponseDTO {
+  id: string; 
+  departureTime: string;
+  status: string;
+  driverName: string;
+  vehiclePlate: string;
+  routeName: string;
+  prices: TravelPriceDTO[];
 }
 
 @Injectable({
@@ -14,28 +23,35 @@ export interface Journey {
 })
 export class SettingsService {
   private http = inject(HttpClient);
-  
-  // Mude para a URL real do seu back-end Spring Boot/Node
+
   private apiUrl = 'http://localhost:8080/api/journeys'; 
   private rateApiUrl = 'http://localhost:8080/api/rates';
 
-  // Buscar todas as viagens (GET)
-  getJourneys(): Observable<Journey[]> {
-    return this.http.get<Journey[]>(this.apiUrl);
+ 
+  getJourneys(): Observable<TravelResponseDTO[] | any> {
+    return this.http.get<TravelResponseDTO[] | any>(this.apiUrl);
+  }
+
+  getVehicles(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/vehicles`);
+  }
+
+  getRoutes(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/routes`);
   }
 
   // Criar nova viagem (POST)
-  addJourney(journey: Journey): Observable<Journey> {
-    return this.http.post<Journey>(this.apiUrl, journey);
+  addJourney(journey: any): Observable<TravelResponseDTO> {
+    return this.http.post<TravelResponseDTO>(this.apiUrl, journey);
   }
 
-  // Atualizar viagem existente (PUT)
-  updateJourney(id: number, journey: Journey): Observable<Journey> {
-    return this.http.put<Journey>(`${this.apiUrl}/${id}`, journey);
+  // Atualizar viagem existente (PUT) - O ID agora é string (UUID)
+  updateJourney(id: string, journey: any): Observable<TravelResponseDTO> {
+    return this.http.put<TravelResponseDTO>(`${this.apiUrl}/${id}`, journey);
   }
 
-  // Deletar viagem (DELETE)
-  deleteJourney(id: number): Observable<void> {
+  // Deletar viagem (DELETE) - O ID agora é string (UUID)
+  deleteJourney(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 

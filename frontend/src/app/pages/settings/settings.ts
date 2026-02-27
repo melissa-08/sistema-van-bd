@@ -1,7 +1,23 @@
 import { Component, signal, computed, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SettingsService, Journey } from '../../services/settings.service'; 
+import { SettingsService } from '../../services/settings.service'; 
+
+export interface TravelPriceDTO {
+  boardingStopId: string;
+  dropOffStopId: string;
+  price: number;
+}
+
+export interface TravelResponseDTO {
+  id: string;
+  departureTime: string; 
+  status: string;
+  driverName: string;
+  vehiclePlate: string;
+  routeName: string;
+  prices: TravelPriceDTO[]; 
+}
 
 @Component({
   selector: 'app-settings',
@@ -13,98 +29,60 @@ export class SettingsComponent implements OnInit {
   private settingsService = inject(SettingsService);
 
   searchQuery = '';
-  newOrigin = '';
-  newDestination = '';
+  
+  // Variáveis do modal (mantidas se for reutilizar para adicionar tarifas)
   newRateValue: number = 0;
-
   currentRate = 0.75;
-  distance = 63; 
 
-  // Adicione isso junto com as outras variáveis da sua classe SettingsComponent
+  vehicles = signal<any[]>([]);
+  routes = signal<any[]>([]);
 
-  // Lista de veículos (No futuro, você fará um GET no back-end para preencher isso)
-  vehicles = signal([
-    { id: '123e4567-e89b-12d3-a456-426614174001', name: 'Van 01 (Placa ABC-1234) - Motorista: João' },
-    { id: '123e4567-e89b-12d3-a456-426614174002', name: 'Micro-ônibus (Placa XYZ-9876) - Motorista: Maria' }
-  ]);
+  // 2. LISTA DE VIAGENS AGORA USA O NOVO DTO
+  private _journeys = signal<TravelResponseDTO[]>([]);
 
-  // Lista de rotas (No futuro, também virá do back-end)
-  routes = signal([
-    { id: '987fcdeb-51a2-43d7-9012-3456789abcde', name: 'Garanhuns -> Recife (Rota Principal)' },
-    { id: '987fcdeb-51a2-43d7-9012-3456789abcdf', name: 'Caruaru -> Maceió (Rota Litoral)' }
-  ]);
-
-  // Inicia vazio, pois os dados virão do back-end
-  private _journeys = signal<Journey[]>([]);
-
-  journeys = computed(() => {
+  // 3. FILTRO ATUALIZADO (pesquisa por rota, motorista ou placa)
+  filteredJourneys = computed(() => {
     const query = this.searchQuery.toLowerCase();
     return this._journeys().filter(j => 
-      j.name.toLowerCase().includes(query) || 
-      j.origin.toLowerCase().includes(query) || 
-      j.destination.toLowerCase().includes(query)
+      (j.routeName && j.routeName.toLowerCase().includes(query)) ||
+      (j.driverName && j.driverName.toLowerCase().includes(query)) ||
+      (j.vehiclePlate && j.vehiclePlate.toLowerCase().includes(query)) ||
+      (j.status && j.status.toLowerCase().includes(query))
     );
   });
 
-  get estimatedValue(): number {
-    return this.distance * this.currentRate;
-  }
-
-  // Variáveis dos Modais
   showEditModal = false;
   showDeleteModal = false;
   selectedJourney: any = null;
 
-  // Ao iniciar o componente, busca os dados da API
   ngOnInit() {
     this.loadData();
   }
 
-  // --- MÉTODOS DE INTEGRAÇÃO COM A API ---
-
   loadData() {
-    // Busca as rotas
     this.settingsService.getJourneys().subscribe({
-      next: (data) => this._journeys.set(data),
+      next: (data: TravelResponseDTO[]) => this._journeys.set(data),
       error: (err) => console.error('Erro ao buscar viagens', err)
     });
 
-    // Opcional: Busca o valor da tarifa atual do back-end
-    // this.settingsService.getRate().subscribe(rate => this.currentRate = rate.value);
-  }
-
-  addJourney() {
-    if (!this.newOrigin || !this.newDestination) {
-      alert('Preencha origem e destino!');
-      return;
+    if (this.settingsService.getVehicles) {
+      this.settingsService.getVehicles().subscribe({
+        next: (data) => this.vehicles.set(data),
+        error: (err) => console.error('Erro veículos', err)
+      });
     }
 
-    const newJourney: Journey = {
-      name: `${this.newOrigin}-${this.newDestination}`,
-      origin: this.newOrigin,
-      destination: this.newDestination
-    };
-
-    // Envia o POST para a API
-    this.settingsService.addJourney(newJourney).subscribe({
-      next: (savedJourney) => {
-        // Atualiza a tela com o dado que retornou do banco (que agora vem com um ID real)
-        this._journeys.update(list => [...list, savedJourney]);
-        this.newOrigin = '';
-        this.newDestination = '';
-      },
-      error: (err) => {
-        console.error('Erro ao salvar', err);
-        alert('Erro ao conectar com o servidor.');
-      }
-    });
+    if (this.settingsService.getRoutes) {
+      this.settingsService.getRoutes().subscribe({
+        next: (data) => this.routes.set(data),
+        error: (err) => console.error('Erro rotas', err)
+      });
+    }
   }
 
-  confirmDelete() {
-    // Envia o DELETE para a API
+  deleteJourney() {
     this.settingsService.deleteJourney(this.selectedJourney.id).subscribe({
       next: () => {
-        // Remove da tela apenas se o back-end confirmou a exclusão
         this._journeys.update(list => list.filter(j => j.id !== this.selectedJourney.id));
         this.closeModals();
       },
@@ -113,10 +91,8 @@ export class SettingsComponent implements OnInit {
   }
 
   confirmSaveEdit() {
-    // Envia o PUT para a API
     this.settingsService.updateJourney(this.selectedJourney.id, this.selectedJourney).subscribe({
-      next: (updatedJourney) => {
-        // Atualiza o item na tela
+      next: (updatedJourney: TravelResponseDTO) => {
         this._journeys.update(list => 
           list.map(j => j.id === updatedJourney.id ? updatedJourney : j)
         );
@@ -128,7 +104,6 @@ export class SettingsComponent implements OnInit {
 
   saveRate() {
     if (this.newRateValue > 0) {
-      // Lógica local temporária sem API para a tarifa ainda:
       this.currentRate = this.newRateValue;
       alert(`Nova tarifa de R$${this.currentRate.toFixed(2)} salva com sucesso!`);
       this.newRateValue = 0;
@@ -137,12 +112,12 @@ export class SettingsComponent implements OnInit {
     }
   }
 
-  openEditModal(journey: any) {
+  openEditModal(journey: TravelResponseDTO) {
     this.selectedJourney = { ...journey };
     this.showEditModal = true;
   }
 
-  openDeleteModal(journey: any) {
+  openDeleteModal(journey: TravelResponseDTO) {
     this.selectedJourney = journey;
     this.showDeleteModal = true;
   }
