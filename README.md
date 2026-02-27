@@ -89,16 +89,18 @@ O objetivo é a implementação de um banco de dados funcional como requisito pa
     </tr>
   </thead>
   <tbody>
-      <tr><td>id</td><td>UUID</td><td>PK</td><td>Identificador único universal do motorista.</td></tr>
-      <tr><td>name</td><td>VARCHAR(120)</td><td>NOT NULL</td><td>Nome completo do condutor.</td></tr>
-      <tr><td>cpf</td><td>VARCHAR(11)</td><td>UNIQUE, NOT NULL</td><td>CPF (apenas números).</td></tr>
-      <tr><td>phone</td><td>VARCHAR(15)</td><td>-</td><td>Telefone de contato.</td></tr>
-      <tr><td>email</td><td>VARCHAR(100)</td><td>UNIQUE, NOT NULL</td><td>Email para login e notificações.</td></tr>
-      <tr><td>password</td><td>VARCHAR(255)</td><td>NOT NULL</td><td>Senha criptografada.</td></tr>
-      <tr><td>birth_date</td><td>DATE</td><td>NOT NULL</td><td>Data de nascimento.</td></tr>
-      <tr><td>cnh</td><td>VARCHAR(11)</td><td>UNIQUE, NOT NULL</td><td>Número da CNH.</td></tr>
-      <tr><td>pix_key</td><td>VARCHAR(100)</td><td>-</td><td>Chave Pix para recebimentos.</td></tr>
-      <tr><td>registration_status</td><td>VARCHAR(20)</td><td>DEFAULT 'PENDING'</td><td>Status de aprovação no sistema.</td></tr>role</td><td>VARCHAR(20)</td><td>NOT NULL</td><td>Papel do usuário no sistema (Ex: DRIVER).</td></tr>
+      <tr><td>id</td><td>UUID</td><td>PK</td><td>Identificador único universal.</td></tr>
+    <tr><td>name</td><td>VARCHAR(120)</td><td>NOT NULL</td><td>Nome completo do condutor.</td></tr>
+    <tr><td>cpf</td><td>VARCHAR(11)</td><td>UNIQUE, NOT NULL</td><td>CPF (apenas números).</td></tr>
+    <tr><td>phone</td><td>VARCHAR(15)</td><td>-</td><td>Telefone de contato.</td></tr>
+    <tr><td>email</td><td>VARCHAR(100)</td><td>UNIQUE, NOT NULL</td><td>Email do condutor.</td></tr>
+    <tr><td>password</td><td>VARCHAR(255)</td><td>NOT NULL</td><td>Senha criptografada.</td></tr>
+    <tr><td>birth_date</td><td>DATE</td><td>NOT NULL</td><td>Data de nascimento.</td></tr>
+    <tr><td>cnh</td><td>VARCHAR(11)</td><td>UNIQUE, NOT NULL</td><td>Número da CNH.</td></tr>
+    <tr><td>pix_key</td><td>VARCHAR(100)</td><td>-</td><td>Chave Pix para recebimento.</td></tr>
+    <tr><td>registration_status</td><td>VARCHAR(20)</td><td>DEFAULT 'PENDING'</td><td>Status de aprovação.</td></tr>
+    <tr><td>rejection_reason</td><td>TEXT</td><td>-</td><td>Motivo caso o cadastro seja negado.</td></tr>
+    <tr><td>role</td><td>VARCHAR(20)</td><td>NOT NULL</td><td>Papel do usuário (DRIVER).</td></tr>
   </tbody>
 </table>
 </details>
@@ -241,6 +243,7 @@ O objetivo é a implementação de um banco de dados funcional como requisito pa
     <tr><td>cpf</td><td>VARCHAR(11)</td><td>UNIQUE, NOT NULL</td><td>CPF do usuário.</td></tr>
     <tr><td>email</td><td>VARCHAR(100)</td><td>UNIQUE, NOT NULL</td><td>Email de login.</td></tr>
     <tr><td>phone</td><td>VARCHAR(15)</td><td>-</td><td>Contato telefônico.</td></tr>role</td><td>VARCHAR(20)</td><td>NOT NULL</td><td>Papel do usuário no sistema (Ex: PASSAGEIRO).</td></tr>
+    <tr><td>role</td><td>VARCHAR(20)</td><td>NOT NULL</td><td>Papel do usuário no sistema (Ex: PASSENGER).</td></tr>
   </tbody>
 </table>
 </details>
@@ -312,6 +315,7 @@ O objetivo é a implementação de um banco de dados funcional como requisito pa
 <tr><td>id</td><td>UUID</td><td>PK</td><td>ID do administrador.</td></tr>
 <tr><td>email</td><td>VARCHAR(100)</td><td>UNIQUE, NOT NULL</td><td>Email de acesso administrativo.</td></tr>
 <tr><td>name</td><td>VARCHAR(120)</td><td>-</td><td>Nome do gestor.</td></tr>role</td><td>VARCHAR(20)</td><td>NOT NULL</td><td>Papel do usuário no sistema (Ex: ADMIN).</td></tr>
+<tr><td>role</td><td>VARCHAR(20)</td><td>NOT NULL</td><td>Papel do usuário no sistema (Ex: ADMIN).</td></tr>
 </tbody>
 </table>
 </details>
