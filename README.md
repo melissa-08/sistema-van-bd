@@ -89,12 +89,16 @@ O objetivo é a implementação de um banco de dados funcional como requisito pa
     </tr>
   </thead>
   <tbody>
-    <tr><td>id_motorista</td><td>INT</td><td>PK, AI</td><td>Identificador único do motorista.</td></tr>
-    <tr><td>nome</td><td>VARCHAR(100)</td><td>NOT NULL</td><td>Nome completo do condutor.</td></tr>
-    <tr><td>cpf</td><td>VARCHAR(11)</td><td>UNIQUE, NOT NULL</td><td>CPF (apenas números).</td></tr>
-    <tr><td>telefone</td><td>VARCHAR(15)</td><td>NOT NULL</td><td>Telefone de contato.</td></tr>
-    <tr><td>chave_pix</td><td>VARCHAR(100)</td><td>NOT NULL</td><td>Chave pix para recebimento de pagamentos.</td></tr>
-    <tr><td>email</td><td>VARCHAR(100)</td><td>NOT NULL</td><td>Email do condutor.</td></tr>
+      <tr><td>id</td><td>UUID</td><td>PK</td><td>Identificador único universal do motorista.</td></tr>
+      <tr><td>name</td><td>VARCHAR(120)</td><td>NOT NULL</td><td>Nome completo do condutor.</td></tr>
+      <tr><td>cpf</td><td>VARCHAR(11)</td><td>UNIQUE, NOT NULL</td><td>CPF (apenas números).</td></tr>
+      <tr><td>phone</td><td>VARCHAR(15)</td><td>-</td><td>Telefone de contato.</td></tr>
+      <tr><td>email</td><td>VARCHAR(100)</td><td>UNIQUE, NOT NULL</td><td>Email para login e notificações.</td></tr>
+      <tr><td>password</td><td>VARCHAR(255)</td><td>NOT NULL</td><td>Senha criptografada.</td></tr>
+      <tr><td>birth_date</td><td>DATE</td><td>NOT NULL</td><td>Data de nascimento.</td></tr>
+      <tr><td>cnh</td><td>VARCHAR(11)</td><td>UNIQUE, NOT NULL</td><td>Número da CNH.</td></tr>
+      <tr><td>pix_key</td><td>VARCHAR(100)</td><td>-</td><td>Chave Pix para recebimentos.</td></tr>
+      <tr><td>registration_status</td><td>VARCHAR(20)</td><td>DEFAULT 'PENDING'</td><td>Status de aprovação no sistema.</td></tr>role</td><td>VARCHAR(20)</td><td>NOT NULL</td><td>Papel do usuário no sistema (Ex: DRIVER).</td></tr>
   </tbody>
 </table>
 </details>
@@ -114,10 +118,12 @@ O objetivo é a implementação de um banco de dados funcional como requisito pa
     </tr>
   </thead>
   <tbody>
-    <tr><td>placa</td><td>VARCHAR(7)</td><td>PK</td><td>Placa do veículo.</td></tr>
-    <tr><td>modelo</td><td>VARCHAR(50)</td><td>NOT NULL</td><td>Modelo da Van.</td></tr>
-    <tr><td>qtd_assentos</td><td>INT</td><td>NOT NULL</td><td>Capacidade máxima de passageiros.</td></tr>
-    <tr><td>id_motorista</td><td>INT</td><td>FK</td><td>Motorista responsável pelo veículo.</td></tr>
+      <tr><td>id</td><td>UUID</td><td>PK</td><td>ID único do veículo.</td></tr>
+      <tr><td>plate</td><td>VARCHAR(7)</td><td>UNIQUE, NOT NULL</td><td>Placa do veículo.</td></tr>
+      <tr><td>model</td><td>VARCHAR(50)</td><td>NOT NULL</td><td>Modelo da Van.</td></tr>
+      <tr><td>seats_quantity</td><td>INT</td><td>NOT NULL</td><td>Capacidade total de passageiros.</td></tr>
+      <tr><td>driver_id</td><td>UUID</td><td>FK</td><td>Vínculo com o motorista proprietário.</td>
+    </tr>
   </tbody>
 </table>
 </details>
@@ -137,8 +143,8 @@ O objetivo é a implementação de um banco de dados funcional como requisito pa
     </tr>
   </thead>
   <tbody>
-    <tr><td>id_rota</td><td>INT</td><td>PK, AI</td><td>ID único da rota.</td></tr>
-    <tr><td>nome_linha</td><td>VARCHAR(100)</td><td>NOT NULL</td><td>Nome comercial (Ex: GaranhunsXCaruaru).</td></tr>
+      <tr><td>id</td><td>UUID</td><td>PK</td><td>Identificador da rota.</td></tr>
+      <tr><td>name</td><td>VARCHAR(100)</td><td>NOT NULL</td><td>Nome da linha (Ex: Garanhuns - Recife).</td></tr>
   </tbody>
 </table>
 </details>
@@ -158,11 +164,11 @@ O objetivo é a implementação de um banco de dados funcional como requisito pa
     </tr>
   </thead>
   <tbody>
-    <tr><td>id_ponto</td><td>INT</td><td>PK, AI</td><td>ID da parada física.</td></tr>
-    <tr><td>cidade</td><td>VARCHAR(100)</td><td>NOT NULL</td><td>Cidade onde se localiza o ponto.</td></tr>
-    <tr><td>local_parada</td><td>VARCHAR(150)</td><td>NOT NULL</td><td>Referência (Ex: Relógio das Flores).</td></tr>
-    <tr><td>ordem_na_rota</td><td>INT</td><td>NOT NULL</td><td>Sequência lógica na rota (1, 2, 3...).</td></tr>
-    <tr><td>id_rota</td><td>INT</td><td>FK</td><td>Vínculo com a Rota correspondente.</td></tr>
+      <tr><td>id</td><td>UUID</td><td>PK</td><td>ID da parada física.</td></tr>
+      <tr><td>city</td><td>VARCHAR(100)</td><td>NOT NULL</td><td>Cidade da parada.</td></tr>
+      <tr><td>stop_location</td><td>VARCHAR(100)</td><td>NOT NULL</td><td>Referência/Logradouro do ponto.</td></tr>
+      <tr><td>stop_order</td><td>INT</td><td>NOT NULL</td><td>Sequência numérica na rota.</td></tr>
+      <tr><td>route_id</td><td>UUID</td><td>FK</td><td>Rota à qual o ponto pertence.</td></tr>
   </tbody>
 </table>
 </details>
@@ -182,12 +188,11 @@ O objetivo é a implementação de um banco de dados funcional como requisito pa
     </tr>
   </thead>
   <tbody>
-    <tr><td>id_viagem</td><td>INT</td><td>PK, AI</td><td>Registro de uma execução da rota.</td></tr>
-    <tr><td>horario_saida</td><td>TIME</td><td>NOT NULL</td><td>Horário de partida da origem.</td></tr>
-    <tr><td>status</td><td>VARCHAR(20)E</td><td>NOT NULL</td><td>Disponibilidade da viagem.</td></tr>
-    <tr><td>id_rota</td><td>INT</td><td>FK</td><td>Rota que será executada nesta viagem.</td></tr>
-    <tr><td>id_motorista</td><td>INT</td><td>FK</td><td>Motorista que executará a viagem.</td></tr>
-    <tr><td>placa</td><td>VARCHAR(7)</td><td>FK</td><td>Veículo alocado para esta viagem.</td></tr>
+      <tr><td>id</td><td>UUID</td><td>PK</td><td>Registro de uma instância de viagem.</td></tr>
+      <tr><td>departure_time</td><td>TIMESTAMP</td><td>NOT NULL</td><td>Data e hora de saída.</td></tr>
+      <tr><td>status</td><td>VARCHAR(20)</td><td>NOT NULL</td><td>Estado (Agendada, Em curso, etc).</td></tr>
+      <tr><td>vehicle_id</td><td>UUID</td><td>FK</td><td>Veículo alocado.</td></tr>
+      <tr><td>route_id</td><td>UUID</td><td>FK</td><td>Rota percorrida.</td></tr>
   </tbody>
 </table>
 </details>
@@ -207,10 +212,11 @@ O objetivo é a implementação de um banco de dados funcional como requisito pa
     </tr>
   </thead>
   <tbody>
-    <tr><td>id_viagem</td><td>INT</td><td>PK, FK</td><td>ID da viagem a qual esses preços pertencem.</td></tr>
-    <tr><td>id_ponto_subida</td><td>INT</td><td>PK, FK</td><td>ID do ponto inicial do trecho.</td></tr>
-    <tr><td>id_ponto_descida</td><td>INT</td><td>PK, FK</td><td>ID do ponto final do trecho.</td></tr>
-    <tr><td>valor_trecho</td><td>DECIMAL(10,2)</td><td>NOT NULL</td><td>Preço fixado para este par de pontos.</td></tr>
+    <tr><td>id</td><td>UUID</td><td>PK</td><td>ID da precificação.</td></tr>
+    <tr><td>travel_id</td><td>UUID</td><td>FK</td><td>Viagem específica.</td></tr>
+    <tr><td>boarding_stop_id</td><td>UUID</td><td>FK</td><td>Ponto de embarque do trecho.</td></tr>
+    <tr><td>dropoff_stop_id</td><td>UUID</td><td>FK</td><td>Ponto de desembarque do trecho.</td></tr>
+    <tr><td>price</td><td>DECIMAL(10,2)</td><td>NOT NULL</td><td>Valor cobrado pelo trecho definido.</td></tr>
   </tbody>
 </table>
 </details>
@@ -230,11 +236,11 @@ O objetivo é a implementação de um banco de dados funcional como requisito pa
     </tr>
   </thead>
   <tbody>
-    <tr><td>id_cliente</td><td>INT</td><td>PK, AI</td><td>ID único do passageiro.</td></tr>
-    <tr><td>nome</td><td>VARCHAR(100)</td><td>NOT NULL</td><td>Nome completo do cliente.</td></tr>
-    <tr><td>cpf</td><td>VARCHAR(11)</td><td>UNIQUE, NOT NULL</td><td>CPF para fins de reserva.</td></tr>
-    <tr><td>telefone</td><td>VARCHAR(15)</td><td>-</td><td>Contato do passageiro.</td></tr>
-    <tr><td>email</td><td>VARCHAR(100)</td><td>NOT NULL</td><td>Email do cliente.</td></tr>
+    <tr><td>id</td><td>UUID</td><td>PK</td><td>ID único do passageiro.</td></tr>
+    <tr><td>name</td><td>VARCHAR(120)</td><td>NOT NULL</td><td>Nome completo.</td></tr>
+    <tr><td>cpf</td><td>VARCHAR(11)</td><td>UNIQUE, NOT NULL</td><td>CPF do usuário.</td></tr>
+    <tr><td>email</td><td>VARCHAR(100)</td><td>UNIQUE, NOT NULL</td><td>Email de login.</td></tr>
+    <tr><td>phone</td><td>VARCHAR(15)</td><td>-</td><td>Contato telefônico.</td></tr>role</td><td>VARCHAR(20)</td><td>NOT NULL</td><td>Papel do usuário no sistema (Ex: PASSAGEIRO).</td></tr>
   </tbody>
 </table>
 </details>
@@ -254,13 +260,12 @@ O objetivo é a implementação de um banco de dados funcional como requisito pa
     </tr>
   </thead>
   <tbody>
-    <tr><td><b>id_cliente</b></td><td>INT</td><td>PK, FK</td><td>Identificador do cliente.</td></tr>
-    <tr><td><b>id_viagem</b></td><td>INT</td><td>PK, FK</td><td>Identificador da viagem.</td></tr>
-    <tr><td><b>id_ponto_subida</b></td><td>INT</td><td>PK, FK</td><td>Ponto de embarque do passageiro.</td></tr>
-    <tr><td><b>id_ponto_descida</b></td><td>INT</td><td>PK, FK</td><td>Ponto de desembarque do passageiro.</td></tr>
-    <tr><td>qtd_passageiros</td><td>INT</td><td>NOT NULL</td><td>Quantidade de assentos reservados.</td></tr>
-    <tr><td>valor_total_reserva</td><td>DECIMAL(10,2)</td><td>-</td><td>Valor final calculado para a reserva.</td></tr>
-    <tr><td>status_reserva</td><td>VARCHAR(20)</td><td>-</td><td>Estado atual (ex: Confirmada, Pendente).</td></tr>
+    <tr><td>id</td><td>UUID</td><td>PK</td><td>Identificador da reserva.</td></tr>
+    <tr><td>passenger_id</td><td>UUID</td><td>FK</td><td>Passageiro que realizou a reserva.</td></tr>
+    <tr><td>travel_id</td><td>UUID</td><td>FK</td><td>Viagem selecionada.</td></tr>
+    <tr><td>passenger_count</td><td>INT</td><td>DEFAULT 1</td><td>Quantidade de assentos.</td></tr>
+    <tr><td>total_value</td><td>DECIMAL(10,2)</td><td>NOT NULL</td><td>Valor total da reserva.</td></tr>
+    <tr><td>status</td><td>VARCHAR(20)</td><td>NOT NULL</td><td>Status (Confirmada, Pendente, etc).</td></tr>
   </tbody>
 </table>
 </details>
@@ -280,14 +285,49 @@ O objetivo é a implementação de um banco de dados funcional como requisito pa
     </tr>
   </thead>
   <tbody>
-    <tr><td><b>id_avaliacao</b></td><td>INT</td><td>PK, AI</td><td>Identificador único da avaliação.</td></tr>
-    <tr><td>pontuacao</td><td>INT</td><td>CHECK (1-5)</td><td>Nota de satisfação dada pelo cliente.</td></tr>
-    <tr><td>comentario</td><td>TEXT</td><td>-</td><td>Feedback em texto sobre o serviço.</td></tr>
-    <tr><td><b>id_motorista</b></td><td>INT</td><td>FK</td><td>Identificador do motorista avaliado.</td></tr>
-    <tr><td><b>id_cliente</b></td><td>INT</td><td>FK</td><td>Identificador do cliente que realizou a avaliação.</td></tr>
+    <tr><td>id</td><td>UUID</td><td>PK</td><td>Identificador único da avaliação.</td></tr>
+    <tr><td>score</td><td>INT</td><td>NOT NULL</td><td>Nota dada ao serviço (Ex: 1 a 5).</td></tr>
+    <tr><td>comment</td><td>TEXT</td><td>-</td><td>Comentário opcional do passageiro.</td></tr>
+    <tr><td>passenger_id</td><td>UUID</td><td>FK</td><td>Passageiro que realizou a avaliação.</td></tr>
+    <tr><td>travel_id</td><td>UUID</td><td>FK</td><td>Viagem que está sendo avaliada.</td></tr>
   </tbody>
 </table>
 </details>
+
+<details>
+<summary><b>9. Tabela: administrators (Admins)</b></summary>
+
+
+
+<table width="100%">
+<thead>
+<tr style="background-color: #f2f2f2;">
+<th>Atributo</th>
+<th>Tipo</th>
+<th>Restrição</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>id</td><td>UUID</td><td>PK</td><td>ID do administrador.</td></tr>
+<tr><td>email</td><td>VARCHAR(100)</td><td>UNIQUE, NOT NULL</td><td>Email de acesso administrativo.</td></tr>
+<tr><td>name</td><td>VARCHAR(120)</td><td>-</td><td>Nome do gestor.</td></tr>role</td><td>VARCHAR(20)</td><td>NOT NULL</td><td>Papel do usuário no sistema (Ex: ADMIN).</td></tr>
+</tbody>
+</table>
+</details>
+
+
+---
+## Controle de Acesso
+
+### Como criar uma conta de Administrador
+
+1. Acesse a página de **Cadastro**
+2. No campo de **email**, utilize um endereço com o domínio "admin", seguindo o formato: `admin@dominio.com` (exemplo: `admin@vanvan.com`)
+3. Preencha os demais campos normalmente
+4. Clique em **"Cadastrar"**
+
+> **Nota:** O sistema reconhecerá automaticamente o usuário como administrador com base no domínio do email informado.
 
 ---
 
