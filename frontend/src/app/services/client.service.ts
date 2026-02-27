@@ -36,7 +36,7 @@ export class ClienteService {
       .set('page', page.toString())
       .set('size', size.toString());
       
-
+    // Assumindo que a rota do seu backend para clientes seja /clients ou /users
     return this.http
       .get<PageResponse<Cliente>>(`${this.API_URL}/clients`, { params })
       .pipe(map(response => response.content));
@@ -52,9 +52,5 @@ export class ClienteService {
 
   excluir(id: string): Observable<void> {
     return this.http.delete<void>(`${this.API_URL}/clients/${id}`);
-  }
-
-  atualizar(id: string, cliente: Partial<Cliente>): Observable<Cliente> {
-    return this.http.put<Cliente>(`${this.API_URL}/clients/${id}`, cliente);
   }
 }
