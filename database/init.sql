@@ -1,6 +1,3 @@
-CREATE DATABASE IF NOT EXISTS SistemaVan;
-USE SistemaVan;
-
 -- motoristas
 CREATE TABLE drivers (
     id UUID PRIMARY KEY,
@@ -13,7 +10,8 @@ CREATE TABLE drivers (
     cnh VARCHAR(11) UNIQUE NOT NULL,
     pix_key VARCHAR(100),
     registration_status VARCHAR(20) DEFAULT 'PENDING',
-    rejection_reason TEXT
+    rejection_reason TEXT,
+    role VARCHAR(20) NOT NULL
 );
 
 -- veículos
@@ -73,7 +71,8 @@ CREATE TABLE passengers (
     email VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     phone VARCHAR(15),
-    birth_date DATE NOT NULL
+    birth_date DATE NOT NULL,
+    role VARCHAR(20) NOT NULL
 );
 
 -- reservas (PK única UUID)
@@ -111,5 +110,6 @@ CREATE TABLE administrators (
     name VARCHAR(120),
     cpf VARCHAR(11),
     phone VARCHAR(15),
-    birth_date DATE
+    birth_date DATE,
+    role VARCHAR(20) NOT NULL
 );
