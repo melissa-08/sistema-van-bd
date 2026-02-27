@@ -13,7 +13,7 @@ public record TravelResponseDTO(
         LocalDateTime departureTime,
         String status,
         String driverName,
-        String vanPlate,
+        String vehiclePlate,
         String routeName,
         List<TravelPriceDTO> prices
 ) {
