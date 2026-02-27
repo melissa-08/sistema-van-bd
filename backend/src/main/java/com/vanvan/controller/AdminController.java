@@ -1,10 +1,6 @@
 package com.vanvan.controller;
 
-import org.springframework.web.bind.annotation.*;
-import com.vanvan.dto.DriverAdminResponseDTO;
-import com.vanvan.dto.DriverStatusUpdateDTO;
-import com.vanvan.dto.DriverUpdateDTO;
-import com.vanvan.model.User;
+import com.vanvan.dto.*;
 import com.vanvan.enums.RegistrationStatus;
 import com.vanvan.service.AdminService;
 import jakarta.validation.Valid;
@@ -13,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -23,7 +20,8 @@ public class AdminController {
 
     private final AdminService adminService;
 
-    @SuppressWarnings("DefaultAnnotationParam")
+    
+//endpoints de motoristas
     @GetMapping("/drivers")
     public ResponseEntity<Page<DriverAdminResponseDTO>> listDrivers(
             @RequestParam(required = false) RegistrationStatus status,
@@ -46,19 +44,21 @@ public class AdminController {
     }
 
     @DeleteMapping("/drivers/{id}")
-    public ResponseEntity<String> deleteDriver(@PathVariable UUID id) {
+    public ResponseEntity<Void> deleteDriver(@PathVariable UUID id) {
         adminService.deleteDriver(id);
         return ResponseEntity.noContent().build();
     }
 
-   @GetMapping("/clients")
-    public ResponseEntity<Page<User>> listClients(
+    // endpoints de passageiros
+
+    @GetMapping("/clients")
+    public ResponseEntity<Page<PassengerResponseDTO>> listClients(
             @PageableDefault(size = 10) Pageable pageable) {
         return ResponseEntity.ok(adminService.listClients(pageable));
     }
 
     @PostMapping("/clients")
-    public ResponseEntity<Object> createClient(@RequestBody User dto) {
+    public ResponseEntity<?> createClient(@Valid @RequestBody RegisterRequestDTO dto) {
         try {
             return ResponseEntity.ok(adminService.createClient(dto));
         } catch (IllegalArgumentException e) {
@@ -67,9 +67,9 @@ public class AdminController {
     }
 
     @PutMapping("/clients/{id}")
-    public ResponseEntity<Object> updateClient(
+    public ResponseEntity<?> updateClient(
             @PathVariable UUID id,
-            @RequestBody User dto) {
+            @Valid @RequestBody PassengerUpdateDTO dto) {
         try {
             return ResponseEntity.ok(adminService.updateClient(id, dto));
         } catch (IllegalArgumentException e) {
@@ -78,12 +78,12 @@ public class AdminController {
     }
 
     @DeleteMapping("/clients/{id}")
-    public ResponseEntity<String> deleteClient(@PathVariable UUID id) {
+    public ResponseEntity<Void> deleteClient(@PathVariable UUID id) {
         try {
             adminService.deleteClient(id);
             return ResponseEntity.noContent().build();
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().build();
         }
     }
 }

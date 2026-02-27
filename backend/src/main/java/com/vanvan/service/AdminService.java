@@ -1,20 +1,18 @@
 package com.vanvan.service;
 
-import com.vanvan.dto.DriverUpdateDTO;
-import com.vanvan.dto.DriverAdminResponseDTO;
-import com.vanvan.dto.DriverStatusUpdateDTO;
+import com.vanvan.dto.*;
 import com.vanvan.enums.RegistrationStatus;
 import com.vanvan.enums.UserRole;
 import com.vanvan.exception.UserNotFoundException;
 import com.vanvan.model.Driver;
-import com.vanvan.model.User;
+import com.vanvan.model.Passenger;
 import com.vanvan.repository.DriverRepository;
+import com.vanvan.repository.PassengerRepository;
 import com.vanvan.repository.UserRepository;
-
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -24,20 +22,21 @@ import java.util.UUID;
 public class AdminService {
 
     private final DriverRepository driverRepository;
+    private final PassengerRepository passengerRepository;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
+    //metodos de motoristas
     public Page<DriverAdminResponseDTO> listDrivers(RegistrationStatus status, Pageable pageable) {
         if (status != null) {
             return driverRepository.findByRegistrationStatus(status, pageable)
                     .map(DriverAdminResponseDTO::from);
-        }
-        else{
+        } else {
             return driverRepository.findAll(pageable)
                     .map(DriverAdminResponseDTO::from);
         }
     }
 
-    //metodo que serve para arpovar ou rejeitar um motorista
     public DriverAdminResponseDTO updateDriverStatus(UUID driverId, DriverStatusUpdateDTO dto) {
         Driver driver = driverRepository.findById(driverId)
                 .orElseThrow(() -> new UserNotFoundException(UserRole.DRIVER, driverId));
@@ -51,7 +50,7 @@ public class AdminService {
         if (dto.status() == RegistrationStatus.REJECTED) {
             driver.setRejectionReason(dto.rejectionReason());
         } else {
-            driver.setRejectionReason(null); 
+            driver.setRejectionReason(null);
         }
         return DriverAdminResponseDTO.from(driverRepository.save(driver));
     }
@@ -75,34 +74,41 @@ public class AdminService {
                 .orElseThrow(() -> new UserNotFoundException(UserRole.DRIVER, driverId));
         driverRepository.delete(driver);
     }
-
-    public Page<User> listClients(Pageable pageable) {
-        return userRepository.findByRole(com.vanvan.enums.UserRole.PASSENGER, pageable);
+    //metodos de passageiros
+    public Page<PassengerResponseDTO> listClients(Pageable pageable) {
+        return passengerRepository.findAll(pageable).map(PassengerResponseDTO::from);
     }
 
-    public User createClient(User dto) {
-        if (userRepository.existsByEmail(dto.getEmail())) {
+    public PassengerResponseDTO createClient(RegisterRequestDTO dto) {
+        if (userRepository.findByEmail(dto.getEmail()) != null) {
             throw new IllegalArgumentException("Já existe um usuário com este email.");
         }
-       
-        return userRepository.save(dto);
+        if (userRepository.findByCpf(dto.getCpf()) != null) {
+            throw new IllegalArgumentException("Já existe um usuário com este CPF.");
+        }
+
+        Passenger passenger = (Passenger) dto.toEntity();
+        
+        passenger.setPassword(passwordEncoder.encode(passenger.getPassword()));
+
+        return PassengerResponseDTO.from(passengerRepository.save(passenger));
     }
 
-    public User updateClient(UUID clientId, User dto) {
-        User user = userRepository.findById(clientId)
+    public PassengerResponseDTO updateClient(UUID clientId, PassengerUpdateDTO dto) {
+        Passenger passenger = passengerRepository.findById(clientId)
                 .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado."));
 
-        if (dto.getName() != null && !dto.getName().isBlank()) user.setName(dto.getName());
-        if (dto.getEmail() != null && !dto.getEmail().isBlank()) user.setEmail(dto.getEmail());
-        if (dto.getPhone() != null && !dto.getPhone().isBlank()) user.setPhone(dto.getPhone());
-        
-        return userRepository.save(user);
+        if (dto.name() != null && !dto.name().isBlank()) passenger.setName(dto.name());
+        if (dto.email() != null && !dto.email().isBlank()) passenger.setEmail(dto.email());
+        if (dto.phone() != null && !dto.phone().isBlank()) passenger.setPhone(dto.phone());
+        if (dto.cpf() != null && !dto.cpf().isBlank()) passenger.setCpf(dto.cpf());
+
+        return PassengerResponseDTO.from(passengerRepository.save(passenger));
     }
 
     public void deleteClient(UUID clientId) {
-        User user = userRepository.findById(clientId)
+        Passenger passenger = passengerRepository.findById(clientId)
                 .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado."));
-        userRepository.delete(user);
+        passengerRepository.delete(passenger);
     }
-
 }

@@ -25,8 +25,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    //essa config deixa abertos login e register endpoints [por ora],
-    // dentre alguns das tools de desenvolvimento, de resto, somente com autenticação
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtFilter jwtFilter){
         return http
@@ -43,23 +41,31 @@ public class SecurityConfig {
                                 "/api/auth/register")
                         .permitAll()
                         .requestMatchers("/error").permitAll()
-                        .requestMatchers(//para swagger
+                        .requestMatchers(
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html"
                         ).permitAll()
-                        .requestMatchers("/h2-console/**").permitAll()//caso venha ser usada essa tool
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")//so admin pode acessar
+                        .requestMatchers("/h2-console/**").permitAll()
+                        
+                        .requestMatchers(
+                                "/api/admin/**",
+                                "/api/vehicles/**", 
+                                "/api/routes/**",   
+                                "/api/travels/**"   
+                        ).hasRole("ADMIN") 
+                        
                         .anyRequest().authenticated()
-                ).headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))//para o console
+                ).headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 
                 .build();
     }
-@Bean
+
+    @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:4200", "https://vanvan-es-frontend.onrender.com")); // Frontend URLs
+        configuration.setAllowedOrigins(List.of("http://localhost:4200", "https://vanvan-es-frontend.onrender.com"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "TRACE", "CONNECT"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type", "Accept", "X-Requested-With", "Access-Control-Allow-Origin", "Access-Control-Allow-Headers", "Origin"));
         configuration.setExposedHeaders(Arrays.asList("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"));
@@ -69,11 +75,8 @@ public class SecurityConfig {
         return source;
     }
 
-    
-    //beans para auth
     @Bean
-    public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration config) {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
