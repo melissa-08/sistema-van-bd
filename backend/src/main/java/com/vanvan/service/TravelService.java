@@ -16,20 +16,17 @@ import java.util.UUID;
 public class TravelService {
 
     private final TravelRepository travelRepository;
-    private final DriverRepository driverRepository;
     private final VehicleRepository vehicleRepository;
     private final RouteRepository routeRepository;
     private final RouteStopRepository routeStopRepository;
 
     public TravelResponseDTO create(TravelRequestDTO dto) {
-        Driver driver = driverRepository.findById(dto.driverId())
-                .orElseThrow(() -> new IllegalArgumentException("Motorista não encontrado."));
         Vehicle vehicle = vehicleRepository.findById(dto.vehicleId())
                 .orElseThrow(() -> new IllegalArgumentException("Veículo não encontrado."));
         Route route = routeRepository.findById(dto.routeId())
                 .orElseThrow(() -> new IllegalArgumentException("Rota não encontrada."));
 
-        Travel travel = new Travel(dto.departureTime(), dto.status(), driver, vehicle, route);
+        Travel travel = new Travel(dto.departureTime(), dto.status(), vehicle, route);
 
         dto.prices().forEach(priceDto -> {
             RouteStop boarding = routeStopRepository.findById(priceDto.boardingStopId())
@@ -61,9 +58,6 @@ public class TravelService {
     public TravelResponseDTO update(UUID id, TravelRequestDTO dto) {
         Travel travel = travelRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Viagem não encontrada."));
-
-        Driver driver = driverRepository.findById(dto.driverId())
-                .orElseThrow(() -> new IllegalArgumentException("Motorista não encontrado."));
         Vehicle vehicle = vehicleRepository.findById(dto.vehicleId())
                 .orElseThrow(() -> new IllegalArgumentException("Veículo não encontrado."));
         Route route = routeRepository.findById(dto.routeId())
@@ -71,7 +65,6 @@ public class TravelService {
 
         travel.setDepartureTime(dto.departureTime());
         travel.setStatus(dto.status());
-        travel.setDriver(driver);
         travel.setVehicle(vehicle); 
         travel.setRoute(route);
 

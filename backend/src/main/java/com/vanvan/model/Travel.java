@@ -30,25 +30,20 @@ public class Travel {
     private TravelStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "driver_id", nullable = false)
-    private Driver driver;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "van_id", nullable = false)
+    @JoinColumn(name = "vehicle_id", nullable = false)
     private Vehicle vehicle;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "route_id", nullable = false)
     private Route route;
 
-    // A mágica do Cascade salva os preços dos trechos junto com a viagem
+    // cascade salva os preços dos trechos junto com a viagem
     @OneToMany(mappedBy = "travel", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TravelPrice> prices = new ArrayList<>();
 
-    public Travel(LocalDateTime departureTime, TravelStatus status, Driver driver, Vehicle vehicle, Route route) {
+    public Travel(LocalDateTime departureTime, TravelStatus status, Vehicle vehicle, Route route) {
         this.departureTime = departureTime;
         this.status = status;
-        this.driver = driver;
         this.vehicle = vehicle;
         this.route = route;
     }
