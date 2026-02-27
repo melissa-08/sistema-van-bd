@@ -6,8 +6,7 @@ import com.vanvan.exception.CnhAlreadyExistsException;
 import com.vanvan.exception.UnderageDriverException;
 import com.vanvan.model.Driver;
 import com.vanvan.model.User;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,27 +23,24 @@ import java.time.LocalDate;
 import java.time.Period;
 
 @Service
-@NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserService {
-    private UserRepository userRepository;
-    private DriverRepository driverRepository;
-    private PassengerRepository passengerRepository;
-    private AdministratorRepository administratorRepository;
-    private PasswordEncoder passwordEncoder;
+
+    private final UserRepository userRepository;
+    private final DriverRepository driverRepository;
+    private final PassengerRepository passengerRepository;
+    private final AdministratorRepository administratorRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public User register(RegisterDTO data) {
 
         var user = data.toEntity();
 
-        //faz todas validações aqui e retorna runtimeexceptions personalizadas caso falhe
         validateUser(user);
 
-        // Criptografa a senha
         String encryptedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encryptedPassword);
 
-        // Faz o switch pelo tipo de usuário
         return switch (user.getRole()) {
             case PASSENGER -> {
                 assert user instanceof Passenger;
@@ -61,26 +57,19 @@ public class UserService {
         };
     }
 
-    //métod0 extraído para cá para melhor separação de responsabilidades
     private void validateUser(User user) {
-
-        //valida idade
         validateAge(user);
 
-        //verifica se o e-mail já está cadastrado
         if (userRepository.findByEmail(user.getEmail()) != null) {
             throw new EmailAlreadyExistsException(user.getName());
         }
-        // Verifica se o CPF já está cadastrado
         else if (userRepository.findByCpf(user.getCpf()) != null) {
             throw new CpfAlreadyExistsException(user.getCpf());
-            //verifica cnh em caso de driver
         } else if (user instanceof Driver driver && driverRepository.existsByCnh(driver.getCnh())) {
             throw new CnhAlreadyExistsException(driver.getCnh());
         }
     }
 
-    //validação de idade
     private void validateAge(User user){
         int age = Period.between(user.getBirthDate(), LocalDate.now()).getYears();
 
@@ -90,8 +79,5 @@ public class UserService {
         if (age < 18){
             throw new UnderageUserException();
         }
-
     }
-
-
 }
