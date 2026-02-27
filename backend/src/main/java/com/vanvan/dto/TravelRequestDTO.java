@@ -17,7 +17,6 @@ public record TravelRequestDTO(
         LocalDateTime departureTime,
         
         @NotNull TravelStatus status,
-        @NotNull UUID driverId,
         @NotNull UUID vehicleId,
         @NotNull UUID routeId,
         
