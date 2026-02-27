@@ -19,11 +19,11 @@ import java.time.LocalDate;
         visible = true
 )
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = RegisterRequestDTO.class, names = {"passenger", "admin"}),
+        @JsonSubTypes.Type(value = RegisterRequestDTO.class, name = "passenger"), // <-- ADMIN REMOVIDO DAQUI
         @JsonSubTypes.Type(value = DriverRegisterRequestDTO.class, name = "driver")
 })
 /*
-*  Pai comum para DTOs do sistema, com m
+* Pai comum para DTOs do sistema, com m
 * **/
 @Getter
 @Setter
