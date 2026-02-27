@@ -1,0 +1,400 @@
+<!-- Full-viewport gradient background -->
+<div class="fixed inset-0 z-[1] pointer-events-none" style="background: linear-gradient(-68deg, rgba(177,177,177,0.3) 1%, rgba(233,233,233,1) 100%)"></div>
+
+<!-- Main Container -->
+<div class="flex flex-col items-center relative w-full min-h-full gap-10 mt-[100px]">
+
+  <!-- Background van top-view image -->
+  <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[1242px] h-[1242px] -mt-8 z-[2] pointer-events-none">
+    <img src="assets/van_topview.png" class="w-full h-full object-cover" alt="background van">
+  </div>
+
+  <!-- ===== MAIN CONTENT: 2-column layout ===== -->
+  <div class="relative z-[10] w-full flex flex-col lg:flex-row justify-between items-stretch gap-6 lg:gap-0">
+
+    <!-- =============== LEFT COLUMN =============== -->
+    <div class="flex flex-col gap-6 w-full lg:w-[43%]">
+
+      <!-- ===== VIAGEM ATUAL (Current Trip Card) ===== -->
+      <div class="glass-card rounded-[24px] p-5 flex flex-col gap-3 flex-1">
+        <h2 class="text-header-3 text-text text-center w-full">Viagem atual</h2>
+
+        <div class="flex flex-col md:flex-row gap-3 items-stretch w-full">
+          <!-- Sub-card 1: Assentos disponíveis -->
+          <div class="glass-inner rounded-[12px] p-5 flex flex-col items-center justify-center gap-2 flex-1">
+            <div class="flex flex-col items-center">
+              <span class="text-body text-subtle-text leading-[1.2] text-center">
+                Assentos<br>disponíveis:
+              </span>
+              <span class="text-medium text-text">{{ currentTrip.availableSeats }}</span>
+            </div>
+            <div class="flex gap-1 items-center justify-center">
+              <button (click)="adjustSeats(-1)"
+                class="size-[47px] rounded-[8px] bg-white flex items-center justify-center cursor-pointer hover:bg-light transition-colors">
+                <div class="size-6 bg-secondary"
+                  style="-webkit-mask: url(assets/icons/check_indeterminate_small.svg) no-repeat center / contain; mask: url(assets/icons/check_indeterminate_small.svg) no-repeat center / contain;">
+                </div>
+              </button>
+              <button (click)="adjustSeats(1)"
+                class="size-[47px] rounded-[8px] bg-white flex items-center justify-center cursor-pointer hover:bg-light transition-colors">
+                <div class="size-6 bg-secondary"
+                  style="-webkit-mask: url(assets/icons/add.svg) no-repeat center / 60%; mask: url(assets/icons/add.svg) no-repeat center / 60%;">
+                </div>
+                <span class="sr-only">+</span>
+              </button>
+            </div>
+            <button (click)="saveSeats()"
+              class="glass-inner-strong rounded-[12px] py-4 w-[98px] flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity">
+              <span class="text-button-text text-secondary">Salvar</span>
+            </button>
+          </div>
+
+          <!-- Sub-card 2: Route info -->
+          <div class="glass-inner rounded-[12px] p-5 flex flex-col gap-[10px] justify-center">
+            <!-- Origin → Destination -->
+            <div class="flex gap-[5px] items-center">
+              <span class="text-body text-text leading-[1.2]">{{ currentTrip.origin }}</span>
+              <div class="size-6 shrink-0 bg-text"
+                style="-webkit-mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain; mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain;">
+              </div>
+              <span class="text-body text-text leading-[1.2]">{{ currentTrip.destination }}</span>
+            </div>
+            <!-- Distance -->
+            <div class="flex gap-[5px] items-center">
+              <div class="size-6 shrink-0 bg-subtle-text"
+                style="-webkit-mask: url(assets/icons/routing.svg) no-repeat center / contain; mask: url(assets/icons/routing.svg) no-repeat center / contain;">
+              </div>
+              <span class="text-body text-subtle-text leading-[1.2]">{{ currentTrip.distance }}</span>
+            </div>
+            <!-- Departure -->
+            <div class="flex flex-col">
+              <span class="text-small text-text">Saída:</span>
+              <div class="flex gap-[5px] items-center">
+                <div class="size-6 shrink-0 bg-subtle-text"
+                  style="-webkit-mask: url(assets/icons/location.svg) no-repeat center / contain; mask: url(assets/icons/location.svg) no-repeat center / contain;">
+                </div>
+                <span class="text-small text-subtle-text">{{ currentTrip.departureLocation }}</span>
+              </div>
+            </div>
+            <!-- Arrival -->
+            <div class="flex flex-col">
+              <span class="text-small text-text">Chegada</span>
+              <div class="flex gap-[5px] items-center">
+                <div class="size-6 shrink-0 bg-subtle-text"
+                  style="-webkit-mask: url(assets/icons/location.svg) no-repeat center / contain; mask: url(assets/icons/location.svg) no-repeat center / contain;">
+                </div>
+                <span class="text-small text-subtle-text">{{ currentTrip.arrivalLocation }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sub-card 3: Date/time + actions -->
+          <div class="flex flex-col gap-[10px] items-stretch">
+            <!-- Date & time pill -->
+            <div class="glass-inner-subtle rounded-[12px] px-5 py-3 flex flex-col gap-1 items-center justify-center flex-1">
+              <span class="text-body text-text leading-[1.2]">Data e horário</span>
+              <div class="flex gap-[10px] items-center justify-center w-full">
+                <div class="flex gap-[5px] items-center">
+                  <div class="size-6 shrink-0 bg-subtle-text"
+                    style="-webkit-mask: url(assets/icons/calendar.svg) no-repeat center / contain; mask: url(assets/icons/calendar.svg) no-repeat center / contain;">
+                  </div>
+                  <span class="text-small text-subtle-text">{{ currentTrip.date }}</span>
+                </div>
+                <div class="flex gap-[5px] items-center">
+                  <div class="size-6 shrink-0 bg-subtle-text"
+                    style="-webkit-mask: url(assets/icons/clock.svg) no-repeat center / contain; mask: url(assets/icons/clock.svg) no-repeat center / contain;">
+                  </div>
+                  <span class="text-small text-subtle-text">{{ currentTrip.time }}</span>
+                </div>
+              </div>
+            </div>
+            <!-- Cancel button -->
+            <button (click)="cancelCurrentTrip()"
+              class="glass-inner rounded-[12px] border border-light px-5 py-4 flex gap-[10px] items-center justify-center cursor-pointer hover:opacity-80 transition-opacity">
+              <div class="size-6 shrink-0 bg-subtle-text"
+                style="-webkit-mask: url(assets/icons/close.svg) no-repeat center / contain; mask: url(assets/icons/close.svg) no-repeat center / contain;">
+              </div>
+              <span class="text-button-text text-subtle-text">CANCELAR</span>
+            </button>
+            <!-- Start trip button -->
+            <button (click)="startTrip()"
+              class="glass-inner-strong rounded-[12px] border border-light px-5 py-4 flex gap-[10px] items-center justify-center cursor-pointer hover:opacity-80 transition-opacity">
+              <div class="size-6 shrink-0 bg-primary"
+                style="-webkit-mask: url(assets/icons/car.svg) no-repeat center / contain; mask: url(assets/icons/car.svg) no-repeat center / contain;">
+              </div>
+              <span class="text-button-text text-primary">INICIAR</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== BOTTOM ROW: Ofertar Viagem + Viagens Anteriores ===== -->
+      <div class="grid grid-cols-2 gap-[24px]">
+
+        <!-- Ofertar Viagem Card -->
+        <div class="glass-card square-card rounded-[24px] p-5 flex flex-col items-center justify-between gap-3">
+          <h2 class="text-header-3 text-text">Ofertar viagem</h2>
+          <!-- Map preview -->
+          <div class="w-full flex-1 rounded-[12px] overflow-hidden relative">
+            <img src="assets/map_example.png" class="w-full h-full object-cover" alt="map preview">
+            <!-- Arrow circle overlay -->
+            <div
+              class="absolute top-2 left-2 size-[57px] bg-secondary rounded-full flex items-center justify-center">
+              <div class="size-6 bg-white"
+                style="-webkit-mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain; mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain;">
+              </div>
+            </div>
+          </div>
+          <!-- Ofertar button -->
+          <button (click)="ofertarViagem()"
+            class="glass-inner-strong rounded-[12px] border border-light px-5 py-4 w-full flex gap-[10px] items-center justify-center cursor-pointer hover:opacity-80 transition-opacity">
+            <div class="size-6 shrink-0 bg-secondary"
+              style="-webkit-mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain; mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain;">
+            </div>
+            <span class="text-header-3 text-secondary">Ofertar</span>
+          </button>
+        </div>
+
+        <!-- Viagens Anteriores Card -->
+        <div class="glass-card square-card rounded-[24px] p-5 flex flex-col items-center justify-between gap-3">
+          <h2 class="text-header-3 text-text">Viagens anteriores</h2>
+
+          <!-- Past trip details -->
+          <div *ngFor="let trip of pastTrips"
+            class="glass-inner rounded-[12px] px-5 py-[10px] flex flex-col gap-[10px] w-full flex-1 justify-center">
+            <!-- Route -->
+            <div class="flex items-center justify-between w-full">
+              <span class="text-medium text-text leading-[1.2]">{{ trip.origin }}</span>
+              <div class="size-6 shrink-0 bg-text"
+                style="-webkit-mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain; mask: url(assets/icons/arrow_forward.svg) no-repeat center / contain;">
+              </div>
+              <span class="text-medium text-text leading-[1.2]">{{ trip.destination }}</span>
+            </div>
+            <!-- Price + Distance -->
+            <div class="flex items-center justify-between w-full">
+              <div class="flex gap-[5px] items-center">
+                <div class="size-6 shrink-0 bg-subtle-text"
+                  style="-webkit-mask: url(assets/icons/dollar-circle.svg) no-repeat center / contain; mask: url(assets/icons/dollar-circle.svg) no-repeat center / contain;">
+                </div>
+                <span class="text-small text-subtle-text">{{ trip.price }}</span>
+              </div>
+              <div class="flex gap-[5px] items-center">
+                <div class="size-6 shrink-0 bg-subtle-text"
+                  style="-webkit-mask: url(assets/icons/routing.svg) no-repeat center / contain; mask: url(assets/icons/routing.svg) no-repeat center / contain;">
+                </div>
+                <span class="text-small text-subtle-text">{{ trip.distance }}</span>
+              </div>
+            </div>
+            <!-- Date + Time -->
+            <div class="flex items-center justify-between w-full">
+              <div class="flex gap-[5px] items-center">
+                <div class="size-6 shrink-0 bg-subtle-text"
+                  style="-webkit-mask: url(assets/icons/calendar.svg) no-repeat center / contain; mask: url(assets/icons/calendar.svg) no-repeat center / contain;">
+                </div>
+                <span class="text-small text-subtle-text">{{ trip.date }}</span>
+              </div>
+              <div class="flex gap-[5px] items-center">
+                <div class="size-6 shrink-0 bg-subtle-text"
+                  style="-webkit-mask: url(assets/icons/clock.svg) no-repeat center / contain; mask: url(assets/icons/clock.svg) no-repeat center / contain;">
+                </div>
+                <span class="text-small text-subtle-text">{{ trip.time }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ver mais button -->
+          <button (click)="verMaisViagens()"
+            class="glass-inner-strong rounded-[12px] border border-light px-5 py-4 w-full flex gap-[10px] items-center justify-center cursor-pointer hover:opacity-80 transition-opacity">
+            <div class="size-6 shrink-0 bg-secondary"
+              style="-webkit-mask: url(assets/icons/refresh-left-square.svg) no-repeat center / contain; mask: url(assets/icons/refresh-left-square.svg) no-repeat center / contain;">
+            </div>
+            <span class="text-header-3 text-secondary">Ver mais</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- =============== RIGHT COLUMN =============== -->
+    <div class="flex flex-col gap-6 w-full lg:w-[43%]">
+
+      <!-- ===== RELATÓRIO (Report Card) ===== -->
+      <div class="glass-card rounded-[24px] p-5 flex flex-col md:flex-row gap-[10px] items-stretch flex-1">
+
+        <!-- Left: Chart area -->
+        <div class="flex flex-col gap-[10px] flex-1">
+          <!-- Title bar -->
+          <div class="glass-inner-subtle rounded-[24px] p-5 flex items-center justify-center">
+            <span class="text-header-3 text-text">Relatório</span>
+          </div>
+
+          <!-- Chart card -->
+          <div class="glass-inner-subtle rounded-[24px] px-3 py-5 flex flex-col gap-[10px] flex-1">
+            <div class="flex items-center justify-center w-full">
+              <span class="text-header-3 text-text">Lucro diário</span>
+            </div>
+            <!-- Bar chart -->
+            <div class="flex gap-[2px] items-end justify-center flex-1 w-full">
+              <!-- Y-axis labels -->
+              <div class="flex flex-col justify-between h-full text-pre-title text-subtle-text mr-1">
+                <span>250</span>
+                <span>0</span>
+              </div>
+              <!-- Bars -->
+              <div class="flex flex-1 items-end justify-between h-full gap-1">
+                <div *ngFor="let bar of report.dailyProfits; let last = last"
+                  class="rounded-[24px] w-[38px] min-w-[24px] flex-1 max-w-[42px] transition-all"
+                  [ngClass]="last ? 'bg-secondary' : 'bg-light'"
+                  [ngStyle]="{'height': bar + '%'}">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Stats cards -->
+        <div class="flex flex-col gap-[10px] w-full md:w-[245px] shrink-0">
+          <!-- Trips completed stat -->
+          <div class="glass-inner-subtle rounded-[24px] flex flex-col flex-1 overflow-hidden">
+            <div class="flex gap-1 items-center pl-[6px] pt-[6px]">
+              <div class="bg-white/80 size-[40px] rounded-full flex items-center justify-center shrink-0">
+                <span class="text-medium text-text leading-[1.2]">{{ report.days }}</span>
+              </div>
+              <span class="text-small text-subtle-text">Dias</span>
+            </div>
+            <div class="flex gap-1 items-center justify-center px-5 pb-5 pt-2">
+              <span class="text-subtitle text-text">{{ report.tripsCompleted }}</span>
+              <span class="text-medium text-subtle-text leading-[1.2]">Viagens realizadas</span>
+            </div>
+          </div>
+          <!-- Profit stat -->
+          <div class="glass-inner-subtle rounded-[24px] flex flex-col flex-1 overflow-hidden">
+            <div class="flex gap-1 items-center pl-[6px] pt-[6px]">
+              <div class="bg-white/80 size-[40px] rounded-full flex items-center justify-center shrink-0">
+                <span class="text-medium text-text leading-[1.2]">{{ report.months }}</span>
+              </div>
+              <span class="text-small text-subtle-text">Mês</span>
+            </div>
+            <div class="flex gap-1 items-center justify-center px-5 pb-5 pt-2">
+              <span class="text-subtitle text-text">{{ report.profit }}</span>
+              <span class="text-medium text-subtle-text leading-[1.2]">De lucro</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== BOTTOM ROW: Ajustar Valores + Seu Veículo ===== -->
+      <div class="grid grid-cols-2 gap-[24px]">
+
+        <!-- Ajustar Valores Card -->
+        <div class="glass-card square-card rounded-[24px] p-5 flex flex-col items-center gap-3">
+          <h2 class="text-header-3 text-text">Ajustar valores</h2>
+
+          <div class="glass-inner rounded-[12px] px-5 py-[10px] flex flex-col gap-[10px] w-full flex-1 justify-center">
+            <!-- Rate per km -->
+            <div class="flex gap-[5px] items-center">
+              <div class="size-6 shrink-0 bg-subtle-text"
+                style="-webkit-mask: url(assets/icons/dollar-circle.svg) no-repeat center / contain; mask: url(assets/icons/dollar-circle.svg) no-repeat center / contain;">
+              </div>
+              <span class="text-subtitle text-subtle-text">{{ pricing.ratePerKm }}</span>
+            </div>
+            <!-- Route prices -->
+            <div *ngFor="let route of pricing.routes" class="flex items-center justify-between w-full">
+              <div class="flex gap-[5px] items-center">
+                <div class="size-6 shrink-0 bg-subtle-text"
+                  style="-webkit-mask: url(assets/icons/routing.svg) no-repeat center / contain; mask: url(assets/icons/routing.svg) no-repeat center / contain;">
+                </div>
+                <span class="text-small text-subtle-text">{{ route.distance }}</span>
+              </div>
+              <span class="text-small text-subtle-text">-</span>
+              <span class="text-small text-subtle-text">{{ route.price }}</span>
+            </div>
+          </div>
+
+          <!-- Alterar button -->
+          <button (click)="alterarValores()"
+            class="glass-inner-strong rounded-[12px] border border-light px-5 py-4 w-full flex gap-[10px] items-center justify-center cursor-pointer hover:opacity-80 transition-opacity">
+            <div class="size-6 shrink-0 bg-secondary"
+              style="-webkit-mask: url(assets/icons/money-tick.svg) no-repeat center / contain; mask: url(assets/icons/money-tick.svg) no-repeat center / contain;">
+            </div>
+            <span class="text-header-3 text-secondary">Alterar</span>
+          </button>
+        </div>
+
+        <!-- Seu Veículo Card -->
+        <div
+          class="glass-card square-card rounded-[24px] p-5 flex flex-col items-center justify-between gap-3 overflow-hidden relative">
+          <h2 class="text-header-3 text-text self-start z-10">Seu veículo</h2>
+
+          <!-- Van side-view image -->
+          <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <img src="assets/van_sideview.png" class="w-[90%] h-auto object-contain opacity-90" alt="van side view">
+          </div>
+
+          <!-- Editar button (on top of image) -->
+          <button (click)="editarVeiculo()"
+            class="glass-inner-strong rounded-[12px] border border-light px-5 py-4 w-full flex gap-[10px] items-center justify-center cursor-pointer hover:opacity-80 transition-opacity relative z-10 mt-auto">
+            <div class="size-6 shrink-0 bg-secondary"
+              style="-webkit-mask: url(assets/icons/edit-2.svg) no-repeat center / contain; mask: url(assets/icons/edit-2.svg) no-repeat center / contain;">
+            </div>
+            <span class="text-header-3 text-secondary">Editar</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== EDIT VEHICLE POPUP ===== -->
+<div *ngIf="showEditVehiclePopup" class="fixed inset-0 z-[50] flex items-center justify-center p-4">
+  <!-- Backdrop -->
+  <div class="absolute inset-0 bg-black/20 backdrop-blur-[25px]" (click)="closeEditVehiclePopup()"></div>
+
+  <!-- Modal Content -->
+  <div class="relative z-10 w-full max-w-[1250px] bg-white/60 backdrop-blur-[40px] border border-light rounded-[24px] p-8 flex flex-col gap-6 items-end">
+    
+    <!-- Title -->
+    <h1 class="text-header-1 text-text w-full text-center ">Seu veículo</h1>
+
+    <!-- Form Fields -->
+    <div class="flex flex-col gap-4 w-full">
+      <!-- Modelo -->
+      <div class="flex flex-col gap-1 w-full">
+        <label class="text-small text-text font-medium">Modelo</label>
+        <input type="text" placeholder="Modelo do seu veículo" class="bg-light rounded-[8px] px-4 py-3 w-full text-body text-subtle-text outline-none focus:ring-2 focus:ring-secondary transition-all">
+      </div>
+
+      <!-- Placa -->
+      <div class="flex flex-col gap-1 w-full">
+        <label class="text-small text-text font-medium">Placa</label>
+        <input type="text" placeholder="ABC-123" class="bg-light rounded-[8px] px-4 py-3 w-full text-body text-subtle-text outline-none focus:ring-2 focus:ring-secondary transition-all">
+      </div>
+
+      <!-- Documento -->
+      <div class="flex flex-col gap-1 w-full">
+        <label class="text-small text-text font-medium">Documento</label>
+        <input type="text" placeholder="Documento do seu veículo" class="bg-light rounded-[8px] px-4 py-3 w-full text-body text-subtle-text outline-none focus:ring-2 focus:ring-secondary transition-all">
+      </div>
+
+      <!-- Foto do veículo -->
+      <div class="flex flex-col gap-1 w-full">
+        <label class="text-small text-text font-medium">Foto do veículo</label>
+        <button class="bg-secondary/20 text-secondary rounded-[8px] px-6 py-4 w-fit font-medium hover:bg-secondary/30 transition-colors">
+          Escolher foto
+        </button>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex gap-6 items-center mt-4">
+      <app-buttons variant="secondary" (click)="closeEditVehiclePopup()">
+        Cancelar
+      </app-buttons>
+      <app-buttons variant="primary" (click)="closeEditVehiclePopup()">
+        Salvar
+      </app-buttons>
+    </div>
+
+  </div>
+</div>

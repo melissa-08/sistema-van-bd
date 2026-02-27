@@ -1,0 +1,22 @@
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100%;
+}
+
+.next-trip-card {
+  position: relative;
+  isolation: isolate;
+}
+
+.next-trip-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(238, 238, 239, 0.7);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border-radius: 24px;
+  z-index: -1;
+}
+
