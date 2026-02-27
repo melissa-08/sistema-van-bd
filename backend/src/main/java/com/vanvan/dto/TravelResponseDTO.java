@@ -13,7 +13,7 @@ public record TravelResponseDTO(
         LocalDateTime departureTime,
         String status,
         String driverName,
-        String vanPlate,
+        String vehiclePlate,
         String routeName,
         List<TravelPriceDTO> prices
 ) {
@@ -22,7 +22,7 @@ public record TravelResponseDTO(
                 travel.getId(),
                 travel.getDepartureTime(),
                 travel.getStatus().getDescription(),
-                travel.getDriver().getName(),
+                travel.getVehicle().getDriver().getName(),
                 travel.getVehicle().getPlate(),
                 travel.getRoute().getName(),
                 travel.getPrices().stream().map(TravelPriceDTO::from).toList()
