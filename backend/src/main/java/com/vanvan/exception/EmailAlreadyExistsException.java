@@ -1,0 +1,12 @@
+package com.vanvan.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(HttpStatus.CONFLICT) //http 409
+public class EmailAlreadyExistsException extends RuntimeException {
+
+    public EmailAlreadyExistsException(String email) {
+        super("Este Email já está cadastrado: " + email);
+    }
+}
