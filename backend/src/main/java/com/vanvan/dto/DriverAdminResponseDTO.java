@@ -12,6 +12,7 @@ public record DriverAdminResponseDTO(
     String email,
     String phone,
     String cnh,
+    String cpf,
     LocalDate birthDate,
     RegistrationStatus registrationStatus,
     String rejectionReason
@@ -23,6 +24,7 @@ public record DriverAdminResponseDTO(
             driver.getEmail(),
             driver.getPhone(),
             driver.getCnh(),
+            driver.getCpf(),
             driver.getBirthDate(),
             driver.getRegistrationStatus(),
             driver.getRejectionReason()

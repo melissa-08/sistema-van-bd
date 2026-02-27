@@ -1,12 +1,22 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { SettingsService } from '../../services/settings.service'; 
 
-interface Journey {
-  id: number;
-  name: string;
-  origin: string;
-  destination: string;
+export interface TravelPriceDTO {
+  boardingStopId: string;
+  dropOffStopId: string;
+  price: number;
+}
+
+export interface TravelResponseDTO {
+  id: string;
+  departureTime: string; 
+  status: string;
+  driverName: string;
+  vehiclePlate: string;
+  routeName: string;
+  prices: TravelPriceDTO[]; 
 }
 
 @Component({
@@ -15,67 +25,81 @@ interface Journey {
   imports: [CommonModule, FormsModule],
   templateUrl: './settings.html'
 })
-export class SettingsComponent {
+export class SettingsComponent implements OnInit {
+  private settingsService = inject(SettingsService);
+
   searchQuery = '';
-  newOrigin = '';
-  newDestination = '';
+  
+  // Variáveis do modal (mantidas se for reutilizar para adicionar tarifas)
   newRateValue: number = 0;
-
   currentRate = 0.75;
-  distance = 63; 
 
-  private _journeys = signal<Journey[]>([
-    { id: 1, name: 'Garanhuns-Recife', origin: 'Garanhuns', destination: 'Recife' },
-    { id: 2, name: 'Caruaru-Maceió', origin: 'Caruaru', destination: 'Maceió' },
-  ]);
+  vehicles = signal<any[]>([]);
+  routes = signal<any[]>([]);
 
-  journeys = computed(() => {
+  // 2. LISTA DE VIAGENS AGORA USA O NOVO DTO
+  private _journeys = signal<TravelResponseDTO[]>([]);
+
+  // 3. FILTRO ATUALIZADO (pesquisa por rota, motorista ou placa)
+  filteredJourneys = computed(() => {
     const query = this.searchQuery.toLowerCase();
     return this._journeys().filter(j => 
-      j.name.toLowerCase().includes(query) || 
-      j.origin.toLowerCase().includes(query) || 
-      j.destination.toLowerCase().includes(query)
+      (j.routeName && j.routeName.toLowerCase().includes(query)) ||
+      (j.driverName && j.driverName.toLowerCase().includes(query)) ||
+      (j.vehiclePlate && j.vehiclePlate.toLowerCase().includes(query)) ||
+      (j.status && j.status.toLowerCase().includes(query))
     );
   });
 
-  // --- Cálculo do Valor Estimado ---
-  get estimatedValue(): number {
-    return this.distance * this.currentRate;
+  showEditModal = false;
+  showDeleteModal = false;
+  selectedJourney: any = null;
+
+  ngOnInit() {
+    this.loadData();
   }
 
-  // --- Métodos de Ação ---
+  loadData() {
+    this.settingsService.getJourneys().subscribe({
+      next: (data: TravelResponseDTO[]) => this._journeys.set(data),
+      error: (err) => console.error('Erro ao buscar viagens', err)
+    });
 
-  addJourney() {
-    if (!this.newOrigin || !this.newDestination) {
-      alert('Preencha origem e destino!');
-      return;
+    if (this.settingsService.getVehicles) {
+      this.settingsService.getVehicles().subscribe({
+        next: (data) => this.vehicles.set(data),
+        error: (err) => console.error('Erro veículos', err)
+      });
     }
 
-    const newRow: Journey = {
-      id: Date.now(), // ID temporário
-      name: `${this.newOrigin}-${this.newDestination}`,
-      origin: this.newOrigin,
-      destination: this.newDestination
-    };
-
-    this._journeys.update(list => [...list, newRow]);
-    
-    // Limpa os campos após adicionar
-    this.newOrigin = '';
-    this.newDestination = '';
-  }
-
-  deleteJourney(id: number) {
-    if (confirm('Tem certeza que deseja excluir este trecho?')) {
-      this._journeys.update(list => list.filter(j => j.id !== id));
+    if (this.settingsService.getRoutes) {
+      this.settingsService.getRoutes().subscribe({
+        next: (data) => this.routes.set(data),
+        error: (err) => console.error('Erro rotas', err)
+      });
     }
   }
 
-  editJourney(journey: Journey) {
-    this.newOrigin = journey.origin;
-    this.newDestination = journey.destination;
-    // Aqui você poderia abrir um modal ou focar no input de edição
-    console.log('Editando:', journey);
+  deleteJourney() {
+    this.settingsService.deleteJourney(this.selectedJourney.id).subscribe({
+      next: () => {
+        this._journeys.update(list => list.filter(j => j.id !== this.selectedJourney.id));
+        this.closeModals();
+      },
+      error: (err) => console.error('Erro ao excluir', err)
+    });
+  }
+
+  confirmSaveEdit() {
+    this.settingsService.updateJourney(this.selectedJourney.id, this.selectedJourney).subscribe({
+      next: (updatedJourney: TravelResponseDTO) => {
+        this._journeys.update(list => 
+          list.map(j => j.id === updatedJourney.id ? updatedJourney : j)
+        );
+        this.closeModals();
+      },
+      error: (err) => console.error('Erro ao editar', err)
+    });
   }
 
   saveRate() {
@@ -88,37 +112,19 @@ export class SettingsComponent {
     }
   }
 
-  // Adicione estas variáveis dentro da classe SettingsComponent
-showEditModal = false;
-showDeleteModal = false;
-selectedJourney: any = null; // Armazena a jornada que está sendo editada/excluída
+  openEditModal(journey: TravelResponseDTO) {
+    this.selectedJourney = { ...journey };
+    this.showEditModal = true;
+  }
 
-// Funções para abrir os modais
-openEditModal(journey: any) {
-  this.selectedJourney = { ...journey }; // Cria uma cópia para não alterar a tabela antes de salvar
-  this.showEditModal = true;
-}
+  openDeleteModal(journey: TravelResponseDTO) {
+    this.selectedJourney = journey;
+    this.showDeleteModal = true;
+  }
 
-openDeleteModal(journey: any) {
-  this.selectedJourney = journey;
-  this.showDeleteModal = true;
-}
-
-closeModals() {
-  this.showEditModal = false;
-  this.showDeleteModal = false;
-  this.selectedJourney = null;
-}
-
-confirmDelete() {
-  // Sua lógica de excluir aqui
-  this._journeys.update(list => list.filter(j => j.id !== this.selectedJourney.id));
-  this.closeModals();
-}
-
-confirmSaveEdit() {
-   // Sua lógica de salvar edição aqui
-   this._journeys.update(list => list.map(j => j.id === this.selectedJourney.id ? this.selectedJourney : j));
-   this.closeModals();
-}
+  closeModals() {
+    this.showEditModal = false;
+    this.showDeleteModal = false;
+    this.selectedJourney = null;
+  }
 }
