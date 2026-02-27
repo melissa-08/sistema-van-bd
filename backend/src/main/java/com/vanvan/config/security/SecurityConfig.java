@@ -52,7 +52,8 @@ public class SecurityConfig {
                                 "/api/admin/**",
                                 "/api/vehicles/**", 
                                 "/api/routes/**",   
-                                "/api/travels/**"   
+                                "/api/travels/**",
+                                "/api/reports/**"
                         ).hasRole("ADMIN") 
                         
                         .anyRequest().authenticated()
