@@ -1,6 +1,7 @@
 package com.vanvan.dto;
 
 import com.vanvan.enums.UserRole;
+import com.vanvan.model.Administrator;
 import com.vanvan.model.Passenger;
 import com.vanvan.model.User;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,10 @@ public class RegisterRequestDTO extends RegisterDTO {
             case PASSENGER -> new Passenger(
                     name, cpf, phone, email, password, birthDate
             );
-            default -> throw new IllegalArgumentException("Tipo de usuário inválido para este cadastro: " + role);
+            case ADMIN -> new Administrator(
+                    name, cpf, phone, email, password, birthDate
+            );
+            default -> throw new IllegalArgumentException("Invalid role: " + role);
         };
     }
 }
