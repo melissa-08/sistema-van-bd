@@ -109,22 +109,73 @@
 
 @if (showEditModal) {
 <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 1000;">
-    <div style="width: 1178px; padding: 24px 68px; background: #FAFAFA; border-radius: 24px; flex-direction: column; gap: 24px; display: flex">
-        <div style="color: #112B3C; font-size: 64px; font-family: 'Google Sans Flex'; font-weight: 700">Editar trechos de viagens</div>
+    <div style="width: 1178px; max-height: 90vh; overflow-y: auto; padding: 24px 68px; background: #FAFAFA; border-radius: 24px; flex-direction: column; gap: 24px; display: flex">
+        <div style="color: #112B3C; font-size: 64px; font-family: 'Google Sans Flex'; font-weight: 700">Editar Viagem</div>
         
         <div style="align-self: stretch; flex-direction: column; gap: 22px; display: flex">
-            <div style="flex-direction: column; gap: 3px; display: flex">
-                <div style="color: #112B3C; font-size: 14px; font-weight: 500">Origem</div>
-                <div style="padding: 12px 16px; background: #EEEEEF; border-radius: 8px;">
-                    <input type="text" [(ngModel)]="selectedJourney.origin" style="width: 100%; border: none; background: transparent; outline: none; color: #646464; font-size: 16px;">
+            
+            <div style="display: flex; gap: 24px;">
+                <div style="flex: 1; flex-direction: column; gap: 3px; display: flex">
+                    <div style="color: #112B3C; font-size: 14px; font-weight: 500">Horário de Partida</div>
+                    <div style="padding: 12px 16px; background: #EEEEEF; border-radius: 8px;">
+                        <input type="datetime-local" [(ngModel)]="selectedJourney.departure_time" style="width: 100%; border: none; background: transparent; outline: none; color: #646464; font-size: 16px;">
+                    </div>
+                </div>
+
+                <div style="flex: 1; flex-direction: column; gap: 3px; display: flex">
+                    <div style="color: #112B3C; font-size: 14px; font-weight: 500">Status</div>
+                    <div style="padding: 12px 16px; background: #EEEEEF; border-radius: 8px;">
+                        <select [(ngModel)]="selectedJourney.status" style="width: 100%; border: none; background: transparent; outline: none; color: #646464; font-size: 16px; cursor: pointer;">
+                            <option value="AGENDADA">Agendada</option>
+                            <option value="EM_ANDAMENTO">Em Andamento</option>
+                            <option value="CONCLUIDA">Concluída</option>
+                            <option value="CANCELADA">Cancelada</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-            <div style="flex-direction: column; gap: 3px; display: flex">
-                <div style="color: #112B3C; font-size: 14px; font-weight: 500">Destino</div>
-                <div style="padding: 12px 16px; background: #EEEEEF; border-radius: 8px;">
-                    <input type="text" [(ngModel)]="selectedJourney.destination" style="width: 100%; border: none; background: transparent; outline: none; color: #646464; font-size: 16px;">
+
+            <div style="display: flex; gap: 24px;">
+                <div style="flex: 1; flex-direction: column; gap: 3px; display: flex">
+                    <div style="color: #112B3C; font-size: 14px; font-weight: 500">Veículo Designado</div>
+                    <div style="padding: 12px 16px; background: #EEEEEF; border-radius: 8px;">
+                        <select [(ngModel)]="selectedJourney.vehicle_id" style="width: 100%; border: none; background: transparent; outline: none; color: #646464; font-size: 16px; cursor: pointer;">
+                            <option [ngValue]="undefined" disabled selected>Selecione um veículo...</option>
+                            @for (vehicle of vehicles(); track vehicle.id) {
+                                <option [value]="vehicle.id">{{ vehicle.name }}</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div style="flex: 1; flex-direction: column; gap: 3px; display: flex">
+                    <div style="color: #112B3C; font-size: 14px; font-weight: 500">Rota Vinculada</div>
+                    <div style="padding: 12px 16px; background: #EEEEEF; border-radius: 8px;">
+                        <select [(ngModel)]="selectedJourney.route_id" style="width: 100%; border: none; background: transparent; outline: none; color: #646464; font-size: 16px; cursor: pointer;">
+                            <option [ngValue]="undefined" disabled selected>Selecione uma rota...</option>
+                            @for (route of routes(); track route.id) {
+                                <option [value]="route.id">{{ route.name }}</option>
+                            }
+                        </select>
+                    </div>
                 </div>
             </div>
+
+            <div style="display: flex; gap: 24px;">
+                <div style="flex: 1; flex-direction: column; gap: 3px; display: flex">
+                    <div style="color: #112B3C; font-size: 14px; font-weight: 500">Origem</div>
+                    <div style="padding: 12px 16px; background: #EEEEEF; border-radius: 8px;">
+                        <input type="text" [(ngModel)]="selectedJourney.origin" style="width: 100%; border: none; background: transparent; outline: none; color: #646464; font-size: 16px;">
+                    </div>
+                </div>
+                <div style="flex: 1; flex-direction: column; gap: 3px; display: flex">
+                    <div style="color: #112B3C; font-size: 14px; font-weight: 500">Destino</div>
+                    <div style="padding: 12px 16px; background: #EEEEEF; border-radius: 8px;">
+                        <input type="text" [(ngModel)]="selectedJourney.destination" style="width: 100%; border: none; background: transparent; outline: none; color: #646464; font-size: 16px;">
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <div style="justify-content: flex-end; gap: 24px; display: flex">

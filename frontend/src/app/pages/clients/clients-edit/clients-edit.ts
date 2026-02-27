@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ClienteService } from '../../../services/client.service';
 
 @Component({
   selector: 'app-cliente-edit',
@@ -18,7 +17,7 @@ export class ClienteEditComponent implements OnInit {
   mostrarSenha = false;
   carregando = false;
 
-  constructor(private service: ClienteService) {}
+  constructor() {}
 
   ngOnInit(): void {
     if (this.cliente) {
@@ -32,24 +31,14 @@ export class ClienteEditComponent implements OnInit {
 
   salvar() {
     if (!this.clienteEditado.id) return;
+
     this.carregando = true;
+    console.log('Editando cliente:', this.clienteEditado);
 
-    // Ajuste os nomes para bater com o que o Java espera
-    const payload = {
-      name: this.clienteEditado.nome || this.clienteEditado.name,
-      email: this.clienteEditado.email,
-      // ... outros campos
-    };
-
-    this.service.atualizar(this.clienteEditado.id, payload).subscribe({
-      next: () => {
-        this.carregando = false;
-        this.aoFechar.emit(true);
-      },
-      error: () => {
-        this.carregando = false;
-        alert('Erro ao atualizar');
-      }
-    });
+    // SIMULAÇÃO (Substitua pelo serviço real)
+    setTimeout(() => {
+      this.carregando = false;
+      this.aoFechar.emit(true); // Emite 'true' indicando que salvou com sucesso
+    }, 1000);
   }
 }
