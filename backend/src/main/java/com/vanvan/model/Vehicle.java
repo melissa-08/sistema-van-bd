@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -29,6 +31,9 @@ public class Vehicle {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "driver_id", nullable = false) // id_motorista
     private Driver driver;
+
+    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Travel> travels = new ArrayList<>();
 
     public Vehicle(String plate, String model, Integer seatsQuantity, Driver driver) {
         this.plate = plate;
