@@ -4,7 +4,7 @@ CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 -- Senha padrão 'password' em BCrypt para todos: $2a$10$kxeAgi3G5EB4M88OweGPxuO1pWfaFUaTBtelqiMQPAHJHgDu/pmL2
 
 INSERT INTO drivers (id, name, cpf, phone, email, password, birth_date, cnh, pix_key, registration_status, rejection_reason, role) VALUES
-('00000000-0000-0000-0000-000000000001', 'João Batista da Silva', '05433215080', '81988880001', 'joao.silva@email.com', '$2a$10$kxeAgi3G5EB4M88OweGPxuO1pWfaFUaTBtelqiMQPAHJHgDu/pmL2', '1980-05-12', '11122233344', '05433215080', 'APPROVED', NULL, 'DRIVER'),
+('00000000-0000-0000-0000-000000000001', 'João Batista da Silva', '90523961081', '81988880001', 'joao.silva@email.com', '$2a$10$kxeAgi3G5EB4M88OweGPxuO1pWfaFUaTBtelqiMQPAHJHgDu/pmL2', '1980-05-12', '11122233344', '05433215080', 'APPROVED', NULL, 'DRIVER'),
 ('00000000-0000-0000-0000-000000000002', 'Maria Aparecida Souza', '82845610050', '81988880002', 'maria.souza@email.com', '$2a$10$kxeAgi3G5EB4M88OweGPxuO1pWfaFUaTBtelqiMQPAHJHgDu/pmL2', '1985-08-22', '22233344455', 'maria.souza@email.com', 'APPROVED', NULL, 'DRIVER'),
 ('00000000-0000-0000-0000-000000000003', 'Carlos Eduardo Lima', '32785461014', '81988880003', 'carlos.lima@email.com', '$2a$10$kxeAgi3G5EB4M88OweGPxuO1pWfaFUaTBtelqiMQPAHJHgDu/pmL2', '1978-11-30', '33344455566', '32785461014', 'APPROVED', NULL, 'DRIVER'),
 ('00000000-0000-0000-0000-000000000004', 'Ana Paula Rodrigues', '21548796032', '81988880004', 'ana.rodrigues@email.com', '$2a$10$kxeAgi3G5EB4M88OweGPxuO1pWfaFUaTBtelqiMQPAHJHgDu/pmL2', '1992-01-15', '44455566677', 'ana.rodrigues@email.com', 'APPROVED', NULL, 'DRIVER'),
@@ -499,7 +499,7 @@ INSERT INTO travel_prices (id, travel_id, boarding_stop_id, dropoff_stop_id, pri
 ('66666666-6666-6666-6666-666666660082', '44444444-4444-4444-4444-444444444450', '33333333-3333-3333-3333-333333333115', '33333333-3333-3333-3333-333333333116', 12.00);
 
 INSERT INTO passengers (id, name, cpf, email, password, phone, birth_date, role) VALUES
-('55555555-5555-5555-5555-555555555001', 'Lucas Andrade', '05433215080', 'lucas.andrade@email.com', '$2a$10$kxeAgi3G5EB4M88OweGPxuO1pWfaFUaTBtelqiMQPAHJHgDu/pmL2', '81988887701', '1995-03-12', 'PASSENGER'),
+('55555555-5555-5555-5555-555555555001', 'Lucas Andrade', '49756045078', 'lucas.andrade@email.com', '$2a$10$kxeAgi3G5EB4M88OweGPxuO1pWfaFUaTBtelqiMQPAHJHgDu/pmL2', '81988887701', '1995-03-12', 'PASSENGER'),
 ('55555555-5555-5555-5555-555555555002', 'Fernanda Oliveira', '82845610050', 'fernanda.oliveira@email.com', '$2a$10$kxeAgi3G5EB4M88OweGPxuO1pWfaFUaTBtelqiMQPAHJHgDu/pmL2', '81988887702', '1990-07-25', 'PASSENGER'),
 ('55555555-5555-5555-5555-555555555003', 'Pedro Henrique Santos', '32785461014', 'pedro.santos@email.com', '$2a$10$kxeAgi3G5EB4M88OweGPxuO1pWfaFUaTBtelqiMQPAHJHgDu/pmL2', '81988887703', '1988-11-05', 'PASSENGER'),
 ('55555555-5555-5555-5555-555555555004', 'Juliana Costa', '21548796032', 'juliana.costa@email.com', '$2a$10$kxeAgi3G5EB4M88OweGPxuO1pWfaFUaTBtelqiMQPAHJHgDu/pmL2', '81988887704', '2000-01-15', 'PASSENGER'),
@@ -683,4 +683,4 @@ INSERT INTO ratings (id, score, comment, passenger_id, travel_id) VALUES
 ('88888888-8888-8888-8888-888888888050', 4, 'Boa experiência geral.', '55555555-5555-5555-5555-555555555047', '44444444-4444-4444-4444-444444444418');
 
 INSERT INTO administrators (id, email, password, name, cpf, phone, birth_date, role) VALUES
-('99999999-9999-9999-9999-999999999001', 'admin.sistemavan@email.com', '$2a$10$kxeAgi3G5EB4M88OweGPxuO1pWfaFUaTBtelqiMQPAHJHgDu/pmL2', 'Carlos Eduardo Menezes', '91384756210', '81997766554', '1998-07-18', 'ADMIN');
+('99999999-9999-9999-9999-999999999001', 'admin.sistemavan@email.com', '$2a$10$kxeAgi3G5EB4M88OweGPxuO1pWfaFUaTBtelqiMQPAHJHgDu/pmL2', 'Carlos Eduardo Menezes', '23912377073', '81997766554', '1998-07-18', 'ADMIN');
