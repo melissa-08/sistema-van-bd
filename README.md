@@ -77,7 +77,7 @@ O objetivo é a implementação de um banco de dados funcional como requisito pa
 <p>Abaixo estão detalhadas todas as entidades do sistema, seus tipos de dados e restrições de integridade.</p>
 
 <details open>
-<summary><b>1. Tabela: MOTORISTA</b></summary>
+<summary><b>1. Tabela: drivers (MOTORISTA)</b></summary>
 <br>
 <table width="100%">
   <thead>
@@ -108,7 +108,7 @@ O objetivo é a implementação de um banco de dados funcional como requisito pa
 <br>
 
 <details>
-<summary><b>2. Tabela: VEICULO</b></summary>
+<summary><b>2. Tabela: vehicles (VEICULO)</b></summary>
 <br>
 <table width="100%">
   <thead>
@@ -133,7 +133,7 @@ O objetivo é a implementação de um banco de dados funcional como requisito pa
 <br>
 
 <details>
-<summary><b>3. Tabela: ROTA</b></summary>
+<summary><b>3. Tabela: routs (ROTA)</b></summary>
 <br>
 <table width="100%">
   <thead>
@@ -154,7 +154,7 @@ O objetivo é a implementação de um banco de dados funcional como requisito pa
 <br>
 
 <details>
-<summary><b>4. Tabela: PONTO</b></summary>
+<summary><b>4. Tabela: route_stops (PONTO)</b></summary>
 <br>
 <table width="100%">
   <thead>
@@ -178,7 +178,7 @@ O objetivo é a implementação de um banco de dados funcional como requisito pa
 <br>
 
 <details>
-<summary><b>5. Tabela: VIAGEM</b></summary>
+<summary><b>5. Tabela: travels (VIAGEM)</b></summary>
 <br>
 <table width="100%">
   <thead>
@@ -202,7 +202,7 @@ O objetivo é a implementação de um banco de dados funcional como requisito pa
 <br>
 
 <details>
-<summary><b>6. Tabela: PRECOS_TRECHOS</b></summary>
+<summary><b>6. Tabela: travel_prices (PRECOS_TRECHOS)</b></summary>
 <br>
 <table width="100%">
   <thead>
@@ -226,7 +226,7 @@ O objetivo é a implementação de um banco de dados funcional como requisito pa
 <br>
 
 <details>
-<summary><b>7. Tabela: CLIENTE</b></summary>
+<summary><b>7. Tabela: passengers (CLIENTE)</b></summary>
 <br>
 <table width="100%">
   <thead>
@@ -250,7 +250,7 @@ O objetivo é a implementação de um banco de dados funcional como requisito pa
 <br>
 
 <details>
-<summary><b>8. Tabela: RESERVA</b></summary>
+<summary><b>8. Tabela: reservations (RESERVA)</b></summary>
 <br>
 <table width="100%">
   <thead>
@@ -275,7 +275,7 @@ O objetivo é a implementação de um banco de dados funcional como requisito pa
 <br>
 
 <details open>
-<summary><b>9. Tabela: AVALIACAO</b></summary>
+<summary><b>9. Tabela: ratings (AVALIACAO)</b></summary>
 <br>
 <table width="100%">
   <thead>
@@ -321,16 +321,11 @@ O objetivo é a implementação de um banco de dados funcional como requisito pa
 
 
 ---
-## Controle de Acesso
 
-### Como criar uma conta de Administrador
+## Como logar como Admistrador
 
-1. Acesse a página de **Cadastro**
-2. No campo de **email**, utilize um endereço com o domínio "admin", seguindo o formato: `admin@dominio.com` (exemplo: `admin@vanvan.com`)
-3. Preencha os demais campos normalmente
-4. Clique em **"Cadastrar"**
-
-> **Nota:** O sistema reconhecerá automaticamente o usuário como administrador com base no domínio do email informado.
+1. Login`admin.sistema@email.com`.
+2. Senha `password`.
 
 ---
 
