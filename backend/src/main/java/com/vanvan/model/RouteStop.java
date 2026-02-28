@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -30,6 +32,12 @@ public class RouteStop {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "route_id", nullable = false)
     private Route route; // id_rota
+
+    @OneToMany(mappedBy = "boardingStop", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TravelPrice> pricesAsBoarding = new ArrayList<>();
+
+    @OneToMany(mappedBy = "dropOffStop", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TravelPrice> pricesAsDropOff = new ArrayList<>();
 
     public RouteStop(String city, String stopLocation, Integer stopOrder, Route route) {
         this.city = city;
