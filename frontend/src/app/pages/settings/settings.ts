@@ -1,23 +1,7 @@
 import { Component, signal, computed, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SettingsService } from '../../services/settings.service'; 
-
-export interface TravelPriceDTO {
-  boardingStopId: string;
-  dropOffStopId: string;
-  price: number;
-}
-
-export interface TravelResponseDTO {
-  id: string;
-  departureTime: string; 
-  status: string;
-  driverName: string;
-  vehiclePlate: string;
-  routeName: string;
-  prices: TravelPriceDTO[]; 
-}
+import { SettingsService, TravelResponseDTO, TravelPriceDTO } from '../../services/settings.service'; 
 
 @Component({
   selector: 'app-settings',
@@ -30,17 +14,16 @@ export class SettingsComponent implements OnInit {
 
   searchQuery = '';
   
-  // Variáveis do modal (mantidas se for reutilizar para adicionar tarifas)
-  newRateValue: number = 0;
+  // Variaveis para a criação de nova viagem (FALTAVAM AQUI)
+  newRouteId: string = '';
+  newVehicleId: string = '';
   currentRate = 0.75;
+  newRateValue: number = 0;
 
   vehicles = signal<any[]>([]);
   routes = signal<any[]>([]);
-
-  // 2. LISTA DE VIAGENS AGORA USA O NOVO DTO
   private _journeys = signal<TravelResponseDTO[]>([]);
 
-  // 3. FILTRO ATUALIZADO (pesquisa por rota, motorista ou placa)
   filteredJourneys = computed(() => {
     const query = this.searchQuery.toLowerCase();
     return this._journeys().filter(j => 
@@ -61,23 +44,47 @@ export class SettingsComponent implements OnInit {
 
   loadData() {
     this.settingsService.getJourneys().subscribe({
-      next: (data: TravelResponseDTO[]) => this._journeys.set(data),
+      // Caso o Spring Boot devolva páginação, use data.content em vez de data
+      next: (data: any) => {
+        const viagens = data.content ? data.content : data;
+        this._journeys.set(viagens);
+      },
       error: (err) => console.error('Erro ao buscar viagens', err)
     });
 
-    if (this.settingsService.getVehicles) {
-      this.settingsService.getVehicles().subscribe({
-        next: (data) => this.vehicles.set(data),
-        error: (err) => console.error('Erro veículos', err)
-      });
+    this.settingsService.getVehicles().subscribe({
+      next: (data) => this.vehicles.set(data),
+      error: (err) => console.error('Erro veículos', err)
+    });
+
+    this.settingsService.getRoutes().subscribe({
+      next: (data) => this.routes.set(data),
+      error: (err) => console.error('Erro rotas', err)
+    });
+  }
+
+  // FUNÇÃO ADICIONAR QUE ESTAVA A FALTAR
+  addJourney() {
+    if(!this.newRouteId || !this.newVehicleId) {
+      alert("Por favor, selecione uma rota e um veículo.");
+      return;
     }
 
-    if (this.settingsService.getRoutes) {
-      this.settingsService.getRoutes().subscribe({
-        next: (data) => this.routes.set(data),
-        error: (err) => console.error('Erro rotas', err)
-      });
-    }
+    const payload = {
+      routeId: this.newRouteId,
+      vehicleId: this.newVehicleId,
+      status: "AGENDADA" // Status inicial padrão
+    };
+
+    this.settingsService.addJourney(payload).subscribe({
+      next: (res: TravelResponseDTO) => {
+        this._journeys.update(list => [...list, res]);
+        alert("Viagem adicionada com sucesso!");
+        this.newRouteId = '';
+        this.newVehicleId = '';
+      },
+      error: (err) => console.error('Erro ao adicionar viagem', err)
+    });
   }
 
   deleteJourney() {

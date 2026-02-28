@@ -27,5 +27,14 @@ services:
       - SPRING_DATASOURCE_PASSWORD=root
       - SPRING_JPA_HIBERNATE_DDL_AUTO=none
 
+  frontend:
+    build:
+      context: ./frontend
+    container_name: vanvan-frontend
+    ports:
+      - "4200:4200"
+    depends_on:
+      - backend
+
 volumes:
   pg_data:

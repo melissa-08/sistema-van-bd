@@ -40,15 +40,15 @@ CREATE TABLE route_stops (
     FOREIGN KEY (route_id) REFERENCES routes(id) ON DELETE CASCADE
 );
 
--- viagens (id_motorista removido, pois já está no veículo)
+-- viagens
 CREATE TABLE travels (
     id UUID PRIMARY KEY,
     departure_time TIMESTAMP NOT NULL,
     status VARCHAR(20) NOT NULL,
     vehicle_id UUID NOT NULL,
     route_id UUID NOT NULL,
-    FOREIGN KEY (vehicle_id) REFERENCES vehicles(id),
-    FOREIGN KEY (route_id) REFERENCES routes(id)
+    FOREIGN KEY (vehicle_id) REFERENCES vehicles(id) ON DELETE CASCADE, 
+    FOREIGN KEY (route_id) REFERENCES routes(id) ON DELETE CASCADE
 );
 
 -- preços
@@ -59,8 +59,9 @@ CREATE TABLE travel_prices (
     dropoff_stop_id UUID NOT NULL,
     price DECIMAL(10,2) NOT NULL,
     FOREIGN KEY (travel_id) REFERENCES travels(id) ON DELETE CASCADE,
-    FOREIGN KEY (boarding_stop_id) REFERENCES route_stops(id),
-    FOREIGN KEY (dropoff_stop_id) REFERENCES route_stops(id)
+    -- AJUSTADO: Se o ponto de parada sumir (ex: deletar rota), o preço some
+    FOREIGN KEY (boarding_stop_id) REFERENCES route_stops(id) ON DELETE CASCADE,
+    FOREIGN KEY (dropoff_stop_id) REFERENCES route_stops(id) ON DELETE CASCADE
 );
 
 -- passageiros
@@ -75,7 +76,7 @@ CREATE TABLE passengers (
     role VARCHAR(20) NOT NULL
 );
 
--- reservas (PK única UUID)
+-- reservas
 CREATE TABLE reservations (
     id UUID PRIMARY KEY,
     passenger_id UUID NOT NULL,
@@ -85,21 +86,21 @@ CREATE TABLE reservations (
     passenger_count INT DEFAULT 1,
     total_value DECIMAL(10,2) NOT NULL,
     status VARCHAR(20) NOT NULL,
-    FOREIGN KEY (passenger_id) REFERENCES passengers(id),
-    FOREIGN KEY (travel_id) REFERENCES travels(id),
-    FOREIGN KEY (boarding_stop_id) REFERENCES route_stops(id),
-    FOREIGN KEY (dropoff_stop_id) REFERENCES route_stops(id)
+    FOREIGN KEY (passenger_id) REFERENCES passengers(id) ON DELETE CASCADE,
+    FOREIGN KEY (travel_id) REFERENCES travels(id) ON DELETE CASCADE,
+    FOREIGN KEY (boarding_stop_id) REFERENCES route_stops(id) ON DELETE CASCADE,
+    FOREIGN KEY (dropoff_stop_id) REFERENCES route_stops(id) ON DELETE CASCADE
 );
 
--- avaliações (vinculada com a viagem)
+-- avaliações
 CREATE TABLE ratings (
     id UUID PRIMARY KEY,
     score INT NOT NULL,
     comment TEXT,
     passenger_id UUID NOT NULL,
     travel_id UUID NOT NULL,
-    FOREIGN KEY (passenger_id) REFERENCES passengers(id),
-    FOREIGN KEY (travel_id) REFERENCES travels(id)
+    FOREIGN KEY (passenger_id) REFERENCES passengers(id) ON DELETE CASCADE, 
+    FOREIGN KEY (travel_id) REFERENCES travels(id) ON DELETE CASCADE        
 );
 
 -- admins
