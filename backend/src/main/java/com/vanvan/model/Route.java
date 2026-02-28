@@ -27,6 +27,9 @@ public class Route {
     @OrderBy("stopOrder ASC")
     private List<RouteStop> stops = new ArrayList<>();
 
+    @OneToMany(mappedBy = "route", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Travel> travels = new ArrayList<>();
+
     public Route(String name) {
         this.name = name;
     }
