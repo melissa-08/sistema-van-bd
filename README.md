@@ -330,7 +330,7 @@ O objetivo é a implementação de um banco de dados funcional como requisito pa
 ---
 
 ## Povoamento do Banco
-O banco de dados é automaticamente populado na inicialização do container MySQL via Docker, utilizando script SQL do arquivo populate.sql. Os dados inseridos representam cenários reais de operação do sistema, incluindo motoristas, veículos, rotas, pontos de parada, viagens, preços por trecho, clientes, reservas e avaliações, respeitando a integridade referencial entre as tabelas.
+O banco de dados é automaticamente populado na inicialização do container MySQL via Docker, utilizando script SQL do arquivo populate.sql. Os dados inseridos sãofícticios e representam cenários de operação do sistema, incluindo motoristas, veículos, rotas, pontos de parada, viagens, preços por trecho, clientes, reservas e avaliações, respeitando a integridade referencial entre as tabelas.
 
 ---
 
