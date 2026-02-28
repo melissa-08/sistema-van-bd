@@ -240,10 +240,9 @@ O objetivo é a implementação de um banco de dados funcional como requisito pa
   <tbody>
     <tr><td>id</td><td>UUID</td><td>PK</td><td>ID único do passageiro.</td></tr>
     <tr><td>name</td><td>VARCHAR(120)</td><td>NOT NULL</td><td>Nome completo.</td></tr>
-    <tr><td>cpf</td><td>VARCHAR(11)</td><td>UNIQUE, NOT NULL</td><td>CPF do usuário.</td></tr>
-    <tr><td>email</td><td>VARCHAR(100)</td><td>UNIQUE, NOT NULL</td><td>Email de login.</td></tr>
-    <tr><td>phone</td><td>VARCHAR(15)</td><td>-</td><td>Contato telefônico.</td></tr>role</td><td>VARCHAR(20)</td><td>NOT NULL</td><td>Papel do usuário no sistema (Ex: PASSAGEIRO).</td></tr>
-    <tr><td>role</td><td>VARCHAR(20)</td><td>NOT NULL</td><td>Papel do usuário no sistema (Ex: PASSENGER).</td></tr>
+    <tr><td>cpf</td><td>VARCHAR(11)</td><td>UNIQUE, NOT NULL</td><td>CPF do passageiro.</td></tr>
+    <tr><td>email</td><td>VARCHAR(100)</td><td>UNIQUE, NOT NULL</td><td>Email de acesso.</td></tr>
+    <tr><td>role</td><td>VARCHAR(20)</td><td>NOT NULL</td><td>Papel do usuário (PASSENGER).</td></tr>
   </tbody>
 </table>
 </details>
@@ -298,7 +297,7 @@ O objetivo é a implementação de um banco de dados funcional como requisito pa
 </details>
 
 <details>
-<summary><b>9. Tabela: administrators (Admins)</b></summary>
+<summary><b>10. Tabela: administrators (Admins)</b></summary>
 
 
 
@@ -314,7 +313,7 @@ O objetivo é a implementação de um banco de dados funcional como requisito pa
 <tbody>
 <tr><td>id</td><td>UUID</td><td>PK</td><td>ID do administrador.</td></tr>
 <tr><td>email</td><td>VARCHAR(100)</td><td>UNIQUE, NOT NULL</td><td>Email de acesso administrativo.</td></tr>
-<tr><td>name</td><td>VARCHAR(120)</td><td>-</td><td>Nome do gestor.</td></tr>role</td><td>VARCHAR(20)</td><td>NOT NULL</td><td>Papel do usuário no sistema (Ex: ADMIN).</td></tr>
+<tr><td>name</td><td>VARCHAR(120)</td><td>-</td><td>Nome do gestor.</td></tr>
 <tr><td>role</td><td>VARCHAR(20)</td><td>NOT NULL</td><td>Papel do usuário no sistema (Ex: ADMIN).</td></tr>
 </tbody>
 </table>
