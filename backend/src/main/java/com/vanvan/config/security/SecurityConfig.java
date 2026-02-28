@@ -26,42 +26,32 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtFilter jwtFilter){
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtFilter jwtFilter) throws Exception {
         return http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
-
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
                 .authorizeHttpRequests(authorize -> authorize
+                        // 1. Libera explicitamente o OPTIONS para evitar 403 antes do login
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers(HttpMethod.POST,
-                                "/api/auth/login",
-                                "/api/auth/register")
-                        .permitAll()
-                        .requestMatchers("/error").permitAll()
-                        .requestMatchers(
-                                "/v3/api-docs/**",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html"
-                        ).permitAll()
-                        .requestMatchers("/h2-console/**").permitAll()
                         
-                        .requestMatchers(
-                                "/api/admin/**",
-                                "/api/vehicles/**", 
-                                "/api/routes/**",   
-                                "/api/travels/**",
-                                "/api/reports/**"
-                        ).hasRole("ADMIN") 
+                        // 2. Garanta que o caminho aqui bata com o que o Front chama
+                        .requestMatchers("/api/auth/**").permitAll() 
+                        .requestMatchers("/error").permitAll()
+                        
+                        // 3. Swagger e H2 (Apenas desenvolvimento)
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/h2-console/**").permitAll()
+                        
+                        // 4. Rotas protegidas para o projeto vanvan-es
+                        .requestMatchers("/api/admin/**", "/api/vehicles/**", "/api/routes/**", "/api/travels/**", "/api/reports/**").hasRole("ADMIN") 
                         
                         .anyRequest().authenticated()
-                ).headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
+                )
+                .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-
                 .build();
-    }
+        }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
